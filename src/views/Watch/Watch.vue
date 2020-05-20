@@ -1,7 +1,7 @@
 <template>
   <div class="watch grey lighten-4 ma-0">
-    <v-content>
-      <v-container style="height: 1200px">
+    <top-head/>
+      <v-container>
         <!--标题-->
         <div>
           <span>{{video.name}}</span>
@@ -21,7 +21,6 @@
           </div>
         </v-card>
       </v-container>
-    </v-content>
   </div>
 </template>
 
@@ -31,12 +30,14 @@
   import Comment from "./Comments"
   import Send from "./Send"
   import Player from "./Player";
+  import TopHead from "./Head"
   export default {
     name: "Watch",
     components: {
       Comment,
       Send,
-      Player
+      Player,
+      TopHead,
     },
     created() {
       if (is_dev_env()) {
