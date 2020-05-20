@@ -10,6 +10,10 @@
         <div>
           <Player/>
         </div>
+        <!--视频信息相关-->
+        <div>
+          <About></About>
+        </div>
         <!--评论相关-->
         <v-card color="white" flat class="pa-2 pt-4 pb-4">
           <div class="pt-2 pb-2 pl-5 grey--text font-weight-bold">{{comments.length}} 条评论</div>
@@ -30,7 +34,8 @@
   import Comment from "./Comments"
   import Send from "./Send"
   import Player from "./Player";
-  import TopHead from "./Head"
+  import TopHead from "./Head";
+  import About from './About'
   export default {
     name: "Watch",
     components: {
@@ -38,6 +43,7 @@
       Send,
       Player,
       TopHead,
+      About
     },
     created() {
       if (is_dev_env()) {
