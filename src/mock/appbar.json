@@ -1,9 +1,9 @@
 {
   "menu" : [
     {
-      "name": "菜单1",
+      "name": "搜索",
       "url": "#",
-      "icon": "mdi-open-in-new"
+      "icon": "mdi-magnify"
     },
     {
       "name": "菜单2",

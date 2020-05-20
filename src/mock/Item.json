@@ -1,0 +1,21 @@
+{
+  "input": [
+    {
+      "name": "miku",
+      "pic": "http://localhost:8080/mock/item1.jpg",
+      "introduction": "hi",
+      "type": "offical"
+    },
+    {
+      "name": "miku",
+      "pic": "http://localhost:8080/mock/item1.jpg",
+      "introduction": "hi"
+    },
+    {
+      "name": "miku",
+      "pic": "http://localhost:8080/mock/item1.jpg",
+      "introduction": "hi"
+    }
+  ],
+  "class": "col-12"
+}
