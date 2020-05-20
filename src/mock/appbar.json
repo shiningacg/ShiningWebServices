@@ -1,0 +1,23 @@
+{
+  "menu" : [
+    {
+      "name": "菜单1",
+      "url": "#",
+      "icon": "mdi-open-in-new"
+    },
+    {
+      "name": "菜单2",
+      "url": "#",
+      "icon": "mdi-open-in-new"
+    },
+    {
+      "name": "菜单2",
+      "url": "#",
+      "icon": "mdi-open-in-new"
+    }
+  ],
+  "user": {
+    "avatar": "",
+    "name": "shlande"
+  }
+}
