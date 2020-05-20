@@ -29,6 +29,7 @@
           <div class="pl-6 d-flex align-center" style="height: 12px">
             <v-icon class="pr-1" size="14" color="grey">mdi-thumb-up-outline</v-icon><span>{{comment.liked}}</span>
             <v-icon class="pl-3" size="14" color="grey">mdi-thumb-down-outline</v-icon>
+            <v-icon class="pl-5" size="14" color="grey">mdi-message-processing-outline</v-icon>
           </div>
           <div class="more-action ml-auto d-flex justify-center">
             <v-icon size="24">mdi-dots-vertical</v-icon>
