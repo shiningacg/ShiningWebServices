@@ -8,7 +8,7 @@
         </div>
         <!--播放器相关-->
         <div>
-          <div ref="dplay"></div>
+          <Player/>
         </div>
         <!--评论相关-->
         <v-card color="white" flat class="pa-2 pt-4 pb-4">
@@ -30,11 +30,13 @@
   import mock from "../../mock/watch.json"
   import Comment from "./Comments"
   import Send from "./Send"
+  import Player from "./Player";
   export default {
     name: "Watch",
     components: {
       Comment,
-      Send
+      Send,
+      Player
     },
     created() {
       if (is_dev_env()) {

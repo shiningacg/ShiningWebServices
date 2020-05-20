@@ -39,8 +39,7 @@
   export default {
     name:"Send",
     props: {
-      video: {},
-      user: {}
+      input: {}
     },
     created() {
       if (is_dev_env()) {
