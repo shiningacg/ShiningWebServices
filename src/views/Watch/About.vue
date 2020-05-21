@@ -5,8 +5,8 @@
         <v-card>
           <v-img
               :src="video.cover"
-              height="180px"
-              width="130px"
+              height="230px"
+              width="160px"
           ></v-img>
         </v-card>
       </div>
