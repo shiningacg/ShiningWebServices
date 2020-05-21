@@ -3,24 +3,29 @@
     <top-head/>
     <Menu/>
     <v-container>
-      <div style="height: 1000px;">
-        <itemcard></itemcard>
-      </div>
+      <v-row>
+        <v-col cols="12"><item-b-ig/></v-col>
+        <v-col cols="4"><item-small></item-small></v-col>
+        <v-col cols="4"><item-small></item-small></v-col>
+        <v-col cols="4"><item-small></item-small></v-col>
+      </v-row>
     </v-container>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import Itemcard from "../../components/Itemcard";
+import ItemSmall from "../../components/ItemSmall";
 import Titlebar from "../../components/Titlebar";
+import ItemBIg from "../../components/ItemBIg";
 import TopHead from "./Head"
 import Menu from "./Menu"
 export default {
   name: 'Home',
   components: {
-    Itemcard,
+    ItemSmall,
     Titlebar,
+    ItemBIg,
     TopHead,
     Menu
   }
