@@ -1,9 +1,9 @@
 <template>
   <v-container fluid class="pa-0 pt-2 pb-2">
-    <v-card height="290" max-width="880" class="pa-3" style="border-radius: 12px;" flat hover>
+    <v-card height="290" max-width="1160" class="pa-3" style="border-radius: 12px;" flat>
       <v-row class="pa-0">
         <!--图片存放-->
-        <v-col class="pa-0 pl-3">
+        <v-col class="pa-0 pl-3" cols="5">
           <div style="border-radius: 12px;overflow: hidden;">
             <v-img
                 :src="this.pic"
@@ -14,7 +14,7 @@
           </div>
         </v-col>
         <!--      信息布局-->
-        <v-col class="pa-0 pl-4 d-flex flex-column">
+        <v-col class="pa-0 pl-4 d-flex flex-column" cols="7">
           <!--    title-->
           <div class="mb-4 mt-4 black--text text--lighten-5 subtitle-1" style="font-family: 'Source Han Sans', 'Nunito',sans-serif  !important;">
             {{info.title}}
