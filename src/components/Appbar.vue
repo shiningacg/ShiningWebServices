@@ -96,7 +96,7 @@
       },
       getColor() {
         if (this.type == "dark") {
-          return "#256D99"
+          return "#232A34"
         } else if (this.type == "light") {
           return "transparent"
         }
