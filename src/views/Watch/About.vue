@@ -12,7 +12,7 @@
       </div>
       <div class="pl-4 d-flex flex-column">
         <!--标题-->
-        <div class="subtitle-1 font-weight-bold pb-2 d-flex">
+        <div class="subtitle-1 font-weight-bold d-flex">
           <span>{{video.name}}</span>
           <div class="spacer"></div>
           <div class="left-btn pr-6 d-flex align-center">
@@ -28,27 +28,38 @@
         <div class="spacer"></div>
         <!--底部菜单栏-->
         <!--上传者的狗头-->
-        <div class="d-flex pr-6" v-if="true">
-          <!--TODO:图标-->
+        <div class="d-flex align-end pr-6" v-if="true">
           <div class="more">
             <div class="pr-6">
-              <v-btn @click="goto('watch')">
-                <span>播放</span>
+              <v-btn rounded color="green" dark class="mr-2">
+                <v-icon class="pr-1">mdi-book-open-variant</v-icon><span>萌娘百科</span>
               </v-btn>
-              <v-btn>
-                <span>萌娘百科</span>
-              </v-btn>
-              <v-btn>
-                <span>下载</span>
+              <v-btn rounded color="primary">
+                <v-icon class="pr-1">mdi-cloud-download</v-icon><span>下载</span>
               </v-btn>
             </div>
           </div>
           <div class="spacer"></div>
           <!--TODO:hover的时候显示简介-->
-          <v-avatar
-              color="orange"
-              size="36"
-          >aa</v-avatar>
+          <div style="border-radius: 26px;" class="pa-1 grey lighten-2">
+            <!--TODO:添加点击的重新导航-->
+            <v-tooltip top>
+              <template v-slot:activator="{ on }">
+                <v-avatar
+                    v-on="on"
+                    color="orange"
+                    size="36"
+                >
+                  <v-img
+                      src="https://prince.kingthemes.org/wp-content/uploads/2017/01/473990304_1280x720-1-150x150.jpg"
+                  ></v-img>
+                </v-avatar>
+              </template>
+              <!--贡献介绍-->
+              <div>创建了该条目</div>
+              <div>上传了 5 个视频</div>
+            </v-tooltip>
+          </div>
         </div>
       </div>
     </v-container>

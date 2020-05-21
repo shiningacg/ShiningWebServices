@@ -11,6 +11,7 @@
           <div>
             <Player/>
           </div>
+          <v-divider></v-divider>
           <!--视频信息相关-->
           <div>
             <About></About>
