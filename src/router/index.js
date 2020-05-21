@@ -2,6 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home/Home.vue'
 import Watch from '../views/Watch/Watch'
+import Login from '../views/Login/Login'
+
 Vue.use(VueRouter)
 
   const routes = [
@@ -22,6 +24,11 @@ Vue.use(VueRouter)
       path: "/watch",
       name: "Watch",
       component: Watch
+    },
+    {
+      path: "/login",
+      name: "Login",
+      component: Login
     }
 
 ]
