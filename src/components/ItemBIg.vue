@@ -36,7 +36,7 @@
             <!--底部按钮组-->
             <!--TODO:添加icon-->
             <div class="pr-6">
-              <v-btn>
+              <v-btn @click="goto('watch')">
                 <span>播放</span>
               </v-btn>
               <v-btn>
@@ -92,6 +92,9 @@
     methods: {
       unix_time(){
         return unix_time
+      },
+      goto(path) {
+        this.$router.push(path)
       }
     }
   }

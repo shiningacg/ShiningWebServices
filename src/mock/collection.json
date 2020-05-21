@@ -7,8 +7,32 @@
   "name": "PSYCHO-PASS 心理测量者 第三季",
   "chapter": [
     {
-      "vid": "10492",
+      "vid": 10492,
       "name": "第一集",
+      "url": "/video.mkv",
+      "watched": 1000
+    },
+    {
+      "vid": 10493,
+      "name": "第二集",
+      "url": "/video.mkv",
+      "watched": 1000
+    },
+    {
+      "vid": 10494,
+      "name": "第三集",
+      "url": "/video.mkv",
+      "watched": 1000
+    },
+    {
+      "vid": 10495,
+      "name": "第四集",
+      "url": "/video.mkv",
+      "watched": 1000
+    },
+    {
+      "vid": 10496,
+      "name": "第五集",
       "url": "/video.mkv",
       "watched": 1000
     }
