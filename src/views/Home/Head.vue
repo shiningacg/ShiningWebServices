@@ -3,7 +3,7 @@
     <v-parallax src="/bg.jpg" height="600">
       <v-sheet color="transparent" dark class="d-flex justify-center">
         <div class="display-1 font-weight-bold" style="max-width: 700px">
-          <span>才华横溢的摄影作者在这里免费分享最精彩的素材照片和视频。</span>
+          <span>想说句骚话但不知道说什么好。。</span>
           <div class="pt-6">
             <v-text-field
                 filled

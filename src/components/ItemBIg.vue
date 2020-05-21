@@ -32,6 +32,20 @@
                   <div>{{info.poster.name}}</div>
                   <div class="grey--text text--lighten-1 caption">{{unix_time()(info.post_time)}}</div>
                 </div>
+            <div class="spacer"></div>
+            <!--底部按钮组-->
+            <!--TODO:添加icon-->
+            <div class="pr-6">
+              <v-btn>
+                <span>播放</span>
+              </v-btn>
+              <v-btn>
+                <span>萌娘百科</span>
+              </v-btn>
+              <v-btn>
+                <span>下载</span>
+              </v-btn>
+            </div>
           </div>
         </v-col>
       </v-row>
