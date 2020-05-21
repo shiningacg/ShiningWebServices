@@ -98,7 +98,7 @@
         if (this.type == "dark") {
           return "#232A34"
         } else if (this.type == "light") {
-          return "transparent"
+          return "rgba(0,0,0,0.2)"
         }
       },
       getFlat() {
