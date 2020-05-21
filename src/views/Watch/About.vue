@@ -26,16 +26,29 @@
           <span>{{video.introduction}}</span>
         </div>
         <div class="spacer"></div>
+        <!--底部菜单栏-->
         <!--上传者的狗头-->
-        <div class="d-flex justify-end pr-6" v-if="false">
+        <div class="d-flex pr-6" v-if="true">
+          <!--TODO:图标-->
+          <div class="more">
+            <div class="pr-6">
+              <v-btn @click="goto('watch')">
+                <span>播放</span>
+              </v-btn>
+              <v-btn>
+                <span>萌娘百科</span>
+              </v-btn>
+              <v-btn>
+                <span>下载</span>
+              </v-btn>
+            </div>
+          </div>
+          <div class="spacer"></div>
+          <!--TODO:hover的时候显示简介-->
           <v-avatar
               color="orange"
               size="36"
           >aa</v-avatar>
-        </div>
-        <!--更新时间线-->
-        <div>
-          <TimeTable/>
         </div>
       </div>
     </v-container>
@@ -43,13 +56,10 @@
 </template>
 <script>
   import is_dev_env from "../../utils/is_dev_env";
-  import TimeTable from './TineTable'
   import mock from "../../mock/video.json"
   export default {
     name:"About",
-    components: {
-      TimeTable
-    },
+    components: {},
     props: {
       input: {
         vid: Number,

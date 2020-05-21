@@ -13,6 +13,7 @@
         <!--视频信息相关-->
         <div>
           <About></About>
+          <TimeTable v-if="false"/>
         </div>
         <!--评论相关-->
         <v-card color="white" flat class="pa-2 pt-4 pb-4">
@@ -30,6 +31,7 @@
 
 <script>
   import is_dev_env from "../../utils/is_dev_env";
+  import TimeTable from './TimeTable'
   import mock from "../../mock/watch.json"
   import Comment from "./Comments"
   import Send from "./Send"
@@ -43,7 +45,8 @@
       Send,
       Player,
       TopHead,
-      About
+      About,
+      TimeTable
     },
     created() {
       if (is_dev_env()) {
