@@ -1,20 +1,22 @@
 <template>
   <div class="watch grey lighten-4 ma-0">
     <top-head/>
-      <v-container>
-        <!--标题-->
-        <div>
-          <span>{{video.name}}</span>
-        </div>
-        <!--播放器相关-->
-        <div>
-          <Player/>
-        </div>
-        <!--视频信息相关-->
-        <div>
-          <About></About>
-          <TimeTable v-if="false"/>
-        </div>
+      <v-container class="pt-0">
+        <v-card flat>
+          <!--标题-->
+          <div class="pa-2 pb-0">
+            <span>{{video.name}}</span>
+          </div>
+          <!--播放器相关-->
+          <div>
+            <Player/>
+          </div>
+          <!--视频信息相关-->
+          <div>
+            <About></About>
+            <TimeTable v-if="false"/>
+          </div>
+        </v-card>
         <!--评论相关-->
         <v-card color="white" flat class="pa-2 pt-4 pb-4">
           <div class="pt-2 pb-2 pl-5 grey--text font-weight-bold">{{comments.length}} 条评论</div>
