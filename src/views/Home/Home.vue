@@ -1,5 +1,6 @@
 <template>
   <div class="home grey lighten-4 ma-0">
+    <Appbar/>
     <top-head/>
     <Menu/>
     <v-container>
@@ -15,6 +16,7 @@
 
 <script>
 // @ is an alias to /src
+import Appbar from "../../components/Appbar"
 import ItemSmall from "../../components/ItemSmall";
 import Titlebar from "../../components/Titlebar";
 import ItemBIg from "../../components/ItemBIg";
@@ -27,7 +29,8 @@ export default {
     Titlebar,
     ItemBIg,
     TopHead,
-    Menu
+    Menu,
+    Appbar
   }
 }
 </script>

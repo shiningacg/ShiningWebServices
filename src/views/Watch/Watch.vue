@@ -1,5 +1,6 @@
 <template>
   <div class="watch grey lighten-4 ma-0">
+    <Appbar/>
     <top-head/>
       <v-container class="pt-0">
         <v-card flat>
@@ -41,6 +42,7 @@
   import Player from "./Player";
   import TopHead from "./Head";
   import About from './About'
+  import Appbar from "../../components/Appbar";
   export default {
     name: "Watch",
     components: {
@@ -49,7 +51,8 @@
       Player,
       TopHead,
       About,
-      TimeTable
+      TimeTable,
+      Appbar
     },
     created() {
       if (is_dev_env()) {
