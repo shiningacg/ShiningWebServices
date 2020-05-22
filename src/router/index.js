@@ -3,7 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home/Home.vue'
 import Watch from '../views/Watch/Watch'
 import Login from '../views/Login/Login'
-
+import Comic from "../views/Comic/Comic"
 Vue.use(VueRouter)
 
   const routes = [
@@ -29,6 +29,11 @@ Vue.use(VueRouter)
       path: "/login",
       name: "Login",
       component: Login
+    },
+    {
+      path: "/comic",
+      name: "Comic",
+      component: Comic
     }
 
 ]
