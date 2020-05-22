@@ -5,7 +5,7 @@
     "cover": "/cover-normal.png",
     "create_time": 155,
     "last_update": 155,
-    "poster": [{
+    "posters": [{
       "name": "shalnde",
       "avatar": "",
       "support": ""
@@ -13,6 +13,10 @@
     "name": "PSYCHO-PASS 心理测量者 第三季",
     "introduction": "故事的主角是高中女生，本田透。和她相依為命的母親亡故以後，她開始了露營生活，而她搭起帳篷的地方卻是家世顯赫的「草摩家」的土地。草摩紫吳決定讓透住進來幫忙家務，於是透開始了和學校的人氣王子草摩由希，以及看由希不順眼的草摩夾的共同生活。但是，透還不知道的是，「草摩家」從幾百年前就被不祥的詛咒束縛……。",
     "view": 1000,
+    "source": [{
+      "name": "moegril",
+      "url": ""
+    }],
     "chapter": [
       {
         "vid": 10492,
@@ -57,7 +61,7 @@
     "cover": "/cover-normal.png",
     "create_time": 155,
     "last_update": 155,
-    "poster": [{
+    "posters": [{
       "name": "shalnde",
       "avatar": "",
       "support": ""
@@ -65,6 +69,10 @@
     "name": "PSYCHO-PASS 心理测量者 第三季",
     "introduction": "故事的主角是高中女生，本田透。和她相依為命的母親亡故以後，她開始了露營生活，而她搭起帳篷的地方卻是家世顯赫的「草摩家」的土地。草摩紫吳決定讓透住進來幫忙家務，於是透開始了和學校的人氣王子草摩由希，以及看由希不順眼的草摩夾的共同生活。但是，透還不知道的是，「草摩家」從幾百年前就被不祥的詛咒束縛……。",
     "view": 1000,
+    "source": [{
+      "name": "",
+      "url": ""
+    }],
     "chapter": []
   }
 }
