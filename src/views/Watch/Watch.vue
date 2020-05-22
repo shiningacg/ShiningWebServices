@@ -5,9 +5,7 @@
       <v-container class="pt-0">
         <v-card flat>
           <!--标题-->
-          <div class="pa-2 pb-0">
-            <span>{{video.name}}</span>
-          </div>
+
           <!--播放器相关-->
           <div>
             <Player/>
