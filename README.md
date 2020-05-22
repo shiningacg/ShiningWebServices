@@ -1,19 +1,14 @@
-# utils
+# 这是什么？
+小主机项目的前段项目，使用vue+vuetify完成
 
-## Project setup
-```
-yarn install
-```
+![Home](./imgs/Home.png)
 
-### Compiles and hot-reloads for development
+### 运行服务
 ```
 yarn serve
 ```
 
-### Compiles and minifies for production
+### 运行构建
 ```
 yarn build
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
