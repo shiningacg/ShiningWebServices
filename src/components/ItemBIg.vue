@@ -28,32 +28,19 @@
           <!--footer-->
           <div class="mt-auto d-flex" style="font-family: 'Source Han Sans', 'Nunito',sans-serif  !important;">
             <!--TODO:添加多用户显示和工作信息-->
-            <div>
+            <div class="d-flex">
               <!--头像及更新信息显示-->
               <v-avatar color="teal" size="44">
                 <v-img :src="posters[0].avatar"></v-img>
               </v-avatar>
               <div class="pl-2">
                 <div>{{posters[0].name}}</div>
-                <div class="grey--text text--lighten-1 caption">{{unix_time()(info.post_time)}}</div>
+                <div class="grey--text text--lighten-1 caption">{{unix_time()(last_update)}}</div>
               </div>
             </div>
             <div class="spacer"></div>
             <!--底部按钮组-->
-            <div class="pr-0">
-              <div class="d-flex align-end pr-6" v-if="true">
-                <div class="pr-6">
-                  <v-btn rounded color="green" dark class="mr-2" v-for="(source,key) in sources" :key="key" v-if="sources!=undefined">
-                    <v-icon class="pr-1">{{source.icon}}</v-icon>
-                    <span>{{source.text}}</span>
-                  </v-btn>
-                  <v-btn rounded color="primary">
-                    <v-icon class="pr-1">mdi-cloud-download</v-icon>
-                    <span>下载</span>
-                  </v-btn>
-                </div>
-              </div>
-            </div>
+            <MoreAction :input="sources"/>
           </div>
         </v-col>
       </v-row>
@@ -65,11 +52,14 @@
   import unix_time from "@/utils/unix_time";
   import mock from "@/mock/collection.json"
   import is_dev_env from "@/utils/is_dev_env";
-
+  import MoreAction from "@/components/MoreAction";
   export default {
     name: "item-card",
     props: {
       input: {}
+    },
+    components: {
+      MoreAction
     },
     data() {
       return {
@@ -81,18 +71,8 @@
           avatar: "",
           support:""
         }],
-        sources: [{
-          icon: "",
-          text: "",
-          url: ""
-        }],
+        sources: {},
         last_update: 0,
-        // 配置信息，用于设置按钮组显示
-        pre_source: [{
-          name: "moegirl",
-          icon: "mdi-book-open-variant",
-          text: "萌娘百科"
-        }]
       }
     },
     created() {
@@ -107,25 +87,12 @@
         this.title = collection.name
         this.cover = collection.cover
         this.introduction = collection.introduction
-        this.poster = collection.poster
+        this.posters = collection.posters
         this.last_update = collection.last_update
-        this.sources = []
-        for (let source in collection.sources) {
-          this.sources.append(this.getSource(source))
-          }
-      },
-      getSource(source) {
-        for (let pre in this.pre_source) {
-          if (source.name == pre.name) {
-            return pre
-          }
-        }
+        this.sources = collection.sources
       },
       unix_time() {
         return unix_time
-      },
-      goto(path) {
-        this.$router.push(path)
       }
     }
   }

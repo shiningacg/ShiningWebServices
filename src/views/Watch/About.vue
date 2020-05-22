@@ -4,7 +4,7 @@
       <div class="cover">
         <v-card>
           <v-img
-              :src="video.cover"
+              :src="about.cover"
               height="230px"
               width="160px"
           ></v-img>
@@ -13,17 +13,17 @@
       <div class="pl-4 d-flex flex-column">
         <!--标题-->
         <div class="subtitle-1 font-weight-bold d-flex">
-          <span>{{video.name}}</span>
+          <span>{{about.title}}</span>
           <div class="spacer"></div>
           <div class="left-btn pr-6 d-flex align-center">
             <v-btn elevation="0" color="#F06292" dark><v-icon>mdi-star-outline</v-icon><span class="font-weight-bold">订阅</span></v-btn>
           </div>
         </div>
         <div class="grey--text caption text--darken-1 font-weight-bold">
-          <span>{{video.watched}} 次播放</span>
+          <span>{{about.view}} 次播放</span>
         </div>
         <div class="body-2 font-weight-bold">
-          <span>{{video.introduction}}</span>
+          <span>{{about.introduction}}</span>
         </div>
         <div class="spacer"></div>
         <!--底部菜单栏-->
@@ -67,32 +67,44 @@
 </template>
 <script>
   import is_dev_env from "../../utils/is_dev_env";
-  import mock from "../../mock/video.json"
+  import mock from "../../mock/collection.json"
   export default {
     name:"About",
     components: {},
     props: {
-      input: {
-        vid: Number,
-        cover: String,
-        poster: [],
-        name: String,
-        url: String,
-        watched: Number,
-        introduction: String
-      }
+      input: {}
     },
     mounted() {
       if (is_dev_env()) {
-        this.video = mock
-        console.log(this.video,mock)
+        this.adapter(mock.video)
         return
       }
-      this.video = this.input
+      this.adapter(this.input)
     },
     data() {
       return {
-        video: {}
+        about: {
+          cover: "",
+          title: "",
+          view: 100,
+          introduction: "",
+          posters:[{
+            name:"",
+            avatar:"",
+            support:""
+          }],
+        },
+      }
+    },
+    methods: {
+      adapter(collection) {
+        this.about = {
+          cover: collection.cover,
+          title: collection.name,
+          view: collection.view,
+          introduction: collection.introduction,
+          posters: collection.posters,
+        }
       }
     }
   }
