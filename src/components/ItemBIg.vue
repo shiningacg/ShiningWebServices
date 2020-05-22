@@ -34,17 +34,17 @@
                 </div>
             <div class="spacer"></div>
             <!--底部按钮组-->
-            <!--TODO:添加icon-->
-            <div class="pr-6">
-              <v-btn @click="goto('watch')">
-                <span>播放</span>
-              </v-btn>
-              <v-btn>
-                <span>萌娘百科</span>
-              </v-btn>
-              <v-btn>
-                <span>下载</span>
-              </v-btn>
+            <div class="pr-0">
+              <div class="d-flex align-end pr-6" v-if="true">
+                  <div class="pr-6">
+                    <v-btn rounded color="green" dark class="mr-2">
+                      <v-icon class="pr-1">mdi-book-open-variant</v-icon><span>萌娘百科</span>
+                    </v-btn>
+                    <v-btn rounded color="primary">
+                      <v-icon class="pr-1">mdi-cloud-download</v-icon><span>下载</span>
+                    </v-btn>
+                  </div>
+              </div>
             </div>
           </div>
         </v-col>
