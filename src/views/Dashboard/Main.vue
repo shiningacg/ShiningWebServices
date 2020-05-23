@@ -2,7 +2,8 @@
   <div class="grey lighten-4" style="height: 100%">
       <TopMenu/>
       <v-container class="pa-0 pt-4">
-        <Upload/>
+        <Upload v-if="false"/>
+        <Manage/>
       </v-container>
   </div>
 </template>
@@ -11,12 +12,14 @@
   import Appbar from "@/components/Appbar";
   import TopMenu from "@/views/Dashboard/TopMenu";
   import Upload from "./Upload";
+  import Manage from "./Manage"
   export default {
     name:"Dashboard",
     components: {
       Appbar,
       TopMenu,
-      Upload
+      Upload,
+      Manage
     },
     data() {},
   }
