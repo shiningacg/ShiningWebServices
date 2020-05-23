@@ -4,6 +4,8 @@ import Home from '../views/Home/Home.vue'
 import Watch from '../views/Watch/Watch'
 import Login from '../views/Login/Login'
 import Comic from "../views/Comic/Comic"
+import Dashboard from "@/views/Dashboard/Main"
+
 Vue.use(VueRouter)
 
   const routes = [
@@ -26,6 +28,11 @@ Vue.use(VueRouter)
       path: "/comic",
       name: "Comic",
       component: Comic
+    },
+    {
+      path: "/dashboard",
+      name: "Dashboard",
+      component: Dashboard
     }
 
 ]
