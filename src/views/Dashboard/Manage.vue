@@ -2,18 +2,21 @@
   <v-container class="pt-0">
     <v-breadcrumbs class="pt-0 pl-0" :items="crumbs" large></v-breadcrumbs>
     <Prject v-if="false"/>
-    <Setting/>
+    <Project_2 v-if="true"/>
+    <Setting v-if="false"/>
   </v-container>
 </template>
 
 <script>
   import Prject from "./Project"
   import Setting from "./Setting"
+  import Project_2 from "@/views/Dashboard/Project_2";
   export default {
     name:"Manage",
     components: {
       Prject,
-      Setting
+      Setting,
+      Project_2
     },
     data() {
       return {
