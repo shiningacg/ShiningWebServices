@@ -2,8 +2,8 @@
   <v-container class="pt-0">
     <v-breadcrumbs class="pt-0 pl-0" :items="crumbs" large></v-breadcrumbs>
     <Prject v-if="false"/>
-    <Project_2 v-if="true"/>
-    <Setting v-if="false"/>
+    <Project_2 v-if="false"/>
+    <Setting v-if="true"/>
   </v-container>
 </template>
 
