@@ -1,9 +1,9 @@
 <template>
   <div class="grey lighten-4" style="height: 100%">
-      <TopMenu/>
+      <TopMenu @menu="activeMenuChange"/>
       <v-container class="pa-0 pt-4">
-        <Upload v-if="false"/>
-        <Manage/>
+        <Upload v-show="activeMenu==0"/>
+        <Manage v-show="activeMenu==1"/>
       </v-container>
   </div>
 </template>
@@ -21,6 +21,15 @@
       Upload,
       Manage
     },
-    data() {},
+    data() {
+      return {
+        activeMenu: 0
+      }
+    },
+    methods: {
+      activeMenuChange(index) {
+        this.activeMenu = index
+      }
+    }
   }
 </script>

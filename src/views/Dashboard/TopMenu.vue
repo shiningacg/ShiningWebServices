@@ -2,17 +2,17 @@
   <div class="white">
     <v-container class="pa-4 pb-0 d-flex">
       <div :class="'ml-2 mr-2 pb-3'+(active==0?' wrapper':'')">
-        <v-btn text :color="active==0?'primary':''" @click="active=0">
+        <v-btn text :color="active==0?'primary':''" @click="Change(0)">
           <v-icon class="pr-2">mdi-plus-circle-outline</v-icon><span class="menu-text">新建</span>
         </v-btn>
       </div>
       <div :class="'ml-2 mr-2 pb-3'+(active==1?' wrapper':'')">
-        <v-btn text :color="active==1?'primary':''" @click="active=1">
+        <v-btn text :color="active==1?'primary':''" @click="Change(1)">
           <v-icon>mdi-settings</v-icon><span class="menu-text">管理</span>
         </v-btn>
       </div>
       <div :class="'ml-2 mr-2 pb-3'+(active==2?' wrapper':'')">
-        <v-btn text :color="active==2?'primary':''" @click="active=2">
+        <v-btn text :color="active==2?'primary':''" @click="Change(2)">
           <v-icon class="pr-2">mdi-account</v-icon><span class="menu-text">个人信息</span>
         </v-btn>
       </div>
@@ -50,6 +50,10 @@
           return true
         }
         return false
+      },
+      Change(index) {
+        this.active = index
+        this.$emit('menu',index)
       }
     }
   }
