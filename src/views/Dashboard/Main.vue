@@ -4,6 +4,7 @@
       <v-container class="pa-0 pt-4">
         <Upload v-show="activeMenu==0"/>
         <Manage v-show="activeMenu==1"/>
+        <User v-show="activeMenu==2"/>
       </v-container>
   </div>
 </template>
@@ -13,13 +14,15 @@
   import TopMenu from "@/views/Dashboard/TopMenu";
   import Upload from "./Upload";
   import Manage from "./Manage"
+  import User from "./User"
   export default {
     name:"Dashboard",
     components: {
       Appbar,
       TopMenu,
       Upload,
-      Manage
+      Manage,
+      User,
     },
     data() {
       return {
