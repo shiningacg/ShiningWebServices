@@ -5,6 +5,7 @@ import Watch from '../views/Watch/Watch'
 import Login from '../views/Login/Login'
 import Comic from "../views/Comic/Comic"
 import Dashboard from "@/views/Dashboard/Main"
+import Test from "@/views/Test"
 
 Vue.use(VueRouter)
 
@@ -33,6 +34,11 @@ Vue.use(VueRouter)
       path: "/dashboard",
       name: "Dashboard",
       component: Dashboard
+    },
+    {
+      path: "/test",
+      name: "Test",
+      component: Test
     }
 
 ]
