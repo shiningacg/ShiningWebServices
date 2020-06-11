@@ -16,7 +16,7 @@
           <v-col cols="12" md="6" lg="6">
 
           </v-col>
-        </v-row>˚
+        </v-row>
       </v-col>
       <!--信息修改-->
       <v-col cols="12" class="pb-0">
@@ -97,7 +97,19 @@
       </v-col>
       <!--内容修改-->
       <v-col cols="12" class="pt-0">
-        <div>内容：</div>
+        <div class="d-flex">
+          <div>内容：</div>
+          <div class="spacer"></div>
+          <div>
+            <v-btn elevation="0" color="green" dark><v-icon>mdi-plus</v-icon>添加</v-btn>
+          </div>
+        </div>
+        <v-row class="pt-4">
+          <!--TODO:自动扩大-->
+          <v-col md="1" v-for="i in 5" :key="i">
+            <v-btn elevation="0" color="primary" @click="$router.push('/dashboard/edit/'+i)"><span class="text-truncate caption font-weight-bold">第193话</span></v-btn>
+          </v-col>
+        </v-row>
       </v-col>
     </v-row>
   </v-card>

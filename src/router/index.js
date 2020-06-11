@@ -6,9 +6,9 @@ import Login from '../views/Login/Login'
 import Comic from "../views/Comic/Comic"
 import Dashboard from "@/views/Dashboard/Main"
 import Test from "@/views/Test"
+import Editer from "@/views/Dashboard/Editer";
 
 import Error from "@/views/Error/Main"
-import DeviceNotSupport from "@/views/Error/DeviceNotSupport";
 
 Vue.use(VueRouter)
 
@@ -36,7 +36,29 @@ Vue.use(VueRouter)
     {
       path: "/dashboard",
       name: "Dashboard",
-      component: Dashboard
+      component: Dashboard,
+      children: [
+        {
+          path: "edit/:id",
+          name: "Editor",
+          component: Editer
+        },
+        {
+          path: "new",
+          name:"New",
+          component:()=>import("@/views/Dashboard/Upload")
+        },
+        {
+          path: "manage",
+          name:"Manage",
+          component:()=>import("@/views/Dashboard/Manage")
+        },
+        {
+          path: "user",
+          name: "User",
+          component: ()=>import("@/views/Dashboard/User")
+        }
+      ]
     },
     {
       path: "/test",
@@ -51,7 +73,7 @@ Vue.use(VueRouter)
         {
           path: "device-not-support",
           name: "DeviceNotSupport",
-          component: DeviceNotSupport
+          component: ()=>import("@/views/Error/DeviceNotSupport")
         }
       ]
     }

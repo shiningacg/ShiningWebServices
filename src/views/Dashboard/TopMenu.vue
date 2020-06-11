@@ -1,19 +1,22 @@
 <template>
   <div class="white">
     <v-container class="pa-4 pb-0 d-flex">
-      <div :class="'ml-2 mr-2 pb-3'+(active==0?' wrapper':'')">
-        <v-btn text :color="active==0?'primary':''" @click="Change(0)">
-          <v-icon class="pr-2">mdi-plus-circle-outline</v-icon><span class="menu-text">新建</span>
+      <div :class="'ml-2 mr-2 pb-3'+(isActive(0)?' wrapper':'')">
+        <v-btn text :color="isActive(0)?'primary':''" @click="Change(0)">
+          <v-icon class="pr-2">mdi-plus-circle-outline</v-icon>
+          <span class="menu-text">新建</span>
         </v-btn>
       </div>
-      <div :class="'ml-2 mr-2 pb-3'+(active==1?' wrapper':'')">
-        <v-btn text :color="active==1?'primary':''" @click="Change(1)">
-          <v-icon>mdi-settings</v-icon><span class="menu-text">管理</span>
+      <div :class="'ml-2 mr-2 pb-3'+(isActive(1)?' wrapper':'')">
+        <v-btn text :color="isActive(1)?'primary':''" @click="Change(1)">
+          <v-icon>mdi-settings</v-icon>
+          <span class="menu-text">管理</span>
         </v-btn>
       </div>
-      <div :class="'ml-2 mr-2 pb-3'+(active==2?' wrapper':'')">
-        <v-btn text :color="active==2?'primary':''" @click="Change(2)">
-          <v-icon class="pr-2">mdi-account</v-icon><span class="menu-text">个人信息</span>
+      <div :class="'ml-2 mr-2 pb-3'+(isActive(2)?' wrapper':'')">
+        <v-btn text :color="isActive(2)?'primary':''" @click="Change(2)">
+          <v-icon class="pr-2">mdi-account</v-icon>
+          <span class="menu-text">个人信息</span>
         </v-btn>
       </div>
       <div class="spacer"></div>
@@ -46,14 +49,30 @@
     },
     methods: {
       isActive(index) {
-        if (this.active == index) {
-          return true
+        switch (index) {
+          case 0:
+            return this.$route.name == "New"
+          case 1:
+            return this.$route.name == "Manage"
+          case 2:
+            return this.$route.name == "User"
         }
-        return false
       },
       Change(index) {
-        this.active = index
-        this.$emit('menu',index)
+        if (this.isActive(index)) {
+          return
+        }
+        switch (index) {
+          case 0 :
+            this.$router.push("/dashboard/new")
+            return
+          case 1:
+            this.$router.push("/dashboard/manage")
+            return
+          case 2:
+            this.$router.push("user")
+            return
+        }
       }
     }
   }
@@ -64,9 +83,11 @@
     font-size: 18px;
     font-weight: 600;
   }
+
   .menu-text:hover {
     color: #0064f9;
   }
+
   .wrapper {
     border-bottom: 3px solid #0064f9;
   }
