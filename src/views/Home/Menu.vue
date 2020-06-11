@@ -1,19 +1,19 @@
 <template>
   <div class="white">
     <v-container class="pa-4 pb-0 d-flex justify-center">
-      <div :class="'ml-2 mr-2 pb-3'+(active==0?' wrapper':'')">
-        <v-btn text :color="active==0?'primary':''" @click="active=0">
+      <div :class="'ml-2 mr-2 pb-3'+(isActive(0)?' wrapper':'')">
+        <v-btn text :color="isActive(0)?'primary':''" @click="changeActive(0)">
           <span class="menu-text">最新上传</span>
         </v-btn>
       </div>
-      <div :class="'ml-2 mr-2 pb-3'+(active==1?' wrapper':'')">
-        <v-btn text :color="active==1?'primary':''" @click="active=1">
-          <span class="menu-text">发现</span>
+      <div :class="'ml-2 mr-2 pb-3'+(isActive(1)?' wrapper':'')">
+        <v-btn text :color="isActive(1)?'primary':''" @click="changeActive(1)">
+          <span class="menu-text">新番计划</span>
         </v-btn>
       </div>
-      <div :class="'ml-2 mr-2 pb-3'+(active==2?' wrapper':'')">
-        <v-btn text :color="active==2?'primary':''" @click="active=2">
-          <span class="menu-text">加入我们</span>
+      <div :class="'ml-2 mr-2 pb-3'+(isActive(2)?' wrapper':'')">
+        <v-btn text :color="isActive(2)?'primary':''" @click="changeActive(2)">
+          <span class="menu-text">发现</span>
         </v-btn>
       </div>
     </v-container>
@@ -30,10 +30,27 @@
     },
     methods: {
       isActive(index) {
-        if (this.active == index) {
-          return true
+        switch (index) {
+          case 0:
+            return this.$route.name == "Latest"
+          case 1:
+            return this.$route.name == "Project"
+          case 2:
+            return this.$route.name == "Find"
         }
-        return false
+      },
+      changeActive(index) {
+        if (this.isActive(index)) {
+          return
+        }
+        switch (index) {
+          case 0:
+            return this.$router.push("latest")
+          case 1:
+            return this.$router.push("project")
+          case 2:
+            return this.$router.push("find")
+        }
       }
     }
   }

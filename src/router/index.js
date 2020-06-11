@@ -16,7 +16,19 @@ Vue.use(VueRouter)
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
+    children: [
+      {
+        path: "latest",
+        name: "Latest",
+        component:()=>import("@/views/Home/Latest")
+      },
+      {
+        path: "project",
+        name: "Project",
+        component:()=>import("@/views/Home/Project")
+      }
+    ]
   },
     {
       path: "/watch",
