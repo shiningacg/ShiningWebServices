@@ -1,20 +1,28 @@
 <template>
-  <v-row>
-    <v-col cols="6" md="3" v-for="(item,key) in this.items" :key="key">
-      <v-img contain :src="item.url == undefined? item.src : item.url" :alt="item.name" height="200"></v-img>
-    </v-col>
-    <v-col cols="6" md="3" class="uploader">
-      <v-card flat class="d-flex align-center justify-center" height="200" width="100%" style="border: 2px dashed grey" @click="activeFileSelector">
-        <div class="justify-center">
-          <div class="text-center"><v-icon size="48">mdi-plus</v-icon></div>
-          <div class="pt-2 grey--text">添加图片</div>
-        </div>
-      </v-card>
-    </v-col>
-    <div v-show="false">
-      <input type="file" ref="file" @change="addFile($event)"/>
-    </div>
-  </v-row>
+  <div>
+    <v-row class="sortable">
+      <v-col cols="6" md="3" v-for="(item,key) in this.items" :key="key"
+             draggable="true"
+             @dragstart="handleDragStart($event, item)"
+             @dragover.prevent="handleDragOver($event, item)"
+             @dragenter="handleDragEnter($event, item)"
+             @dragend="handleDragEnd($event, item)"
+      >
+        <v-img contain :src="item.url == undefined? item.src : item.url" :alt="item.name" height="200"></v-img>
+      </v-col>
+      <v-col cols="6" md="3" class="uploader">
+        <v-card flat class="d-flex align-center justify-center" height="200" width="100%" style="border: 2px dashed grey" @click="activeFileSelector">
+          <div class="justify-center">
+            <div class="text-center"><v-icon size="48">mdi-plus</v-icon></div>
+            <div class="pt-2 grey--text">添加图片</div>
+          </div>
+        </v-card>
+      </v-col>
+      <div v-show="false">
+        <input type="file" ref="file" @change="addFile($event)"/>
+      </div>
+    </v-row>
+  </div>
 </template>
 <script>
   import mock from "@/mock/uploader.json"
@@ -30,7 +38,8 @@
     },
     data() {
       return {
-        items:[]
+        items:[],
+        dragging: null
       }
     },
     methods: {
@@ -48,6 +57,28 @@
         reader.onload = function(e) {
           _this.items.push({name:file.filename,src:this.result,file:file})
         }
+      },
+      handleDragStart(e,item){
+        this.dragging = item;
+      },
+      handleDragEnd(e,item){
+        this.dragging = null
+      },
+      //首先把div变成可以放置的元素，即重写dragenter/dragover
+      handleDragOver(e) {
+        e.dataTransfer.dropEffect = 'move'// e.dataTransfer.dropEffect="move";//在dragenter中针对放置目标来设置!
+      },
+      handleDragEnter(e,item){
+        e.dataTransfer.effectAllowed = "move"//为需要移动的元素设置dragstart事件
+        if(item === this.dragging){
+          return
+        }
+        const newItems = [...this.items]
+        console.log(newItems)
+        const src = newItems.indexOf(this.dragging)
+        const dst = newItems.indexOf(item)
+        newItems.splice(dst, 0, ...newItems.splice(src, 1))
+        this.items = newItems
       }
     }
   }
