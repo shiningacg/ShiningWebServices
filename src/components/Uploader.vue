@@ -8,7 +8,12 @@
              @dragenter="handleDragEnter($event, item)"
              @dragend="handleDragEnd($event, item)"
       >
-        <v-img contain :src="item.url == undefined? item.src : item.url" :alt="item.name" height="200"></v-img>
+        <div style="position: relative">
+          <div style="position: absolute;right: 32px;">
+            <v-btn text fab x-small absolute @click="removeFile(key)"><v-icon>mdi-close-circle</v-icon></v-btn>
+          </div>
+          <v-img contain :src="item.url == undefined? item.src : item.url" :alt="item.name" height="200"></v-img>
+        </div>
       </v-col>
       <v-col cols="6" md="3" class="uploader">
         <v-card flat class="d-flex align-center justify-center" height="200" width="100%" style="border: 2px dashed grey" @click="activeFileSelector">
@@ -57,6 +62,9 @@
         reader.onload = function(e) {
           _this.items.push({name:file.filename,src:this.result,file:file})
         }
+      },
+      removeFile(key) {
+        this.items.splice(key,1)
       },
       handleDragStart(e,item){
         this.dragging = item;
