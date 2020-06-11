@@ -7,6 +7,9 @@ import Comic from "../views/Comic/Comic"
 import Dashboard from "@/views/Dashboard/Main"
 import Test from "@/views/Test"
 
+import Error from "@/views/Error/Main"
+import DeviceNotSupport from "@/views/Error/DeviceNotSupport";
+
 Vue.use(VueRouter)
 
   const routes = [
@@ -39,6 +42,18 @@ Vue.use(VueRouter)
       path: "/test",
       name: "Test",
       component: Test
+    },
+    {
+      path: "/error",
+      name: "Error",
+      component: Error,
+      children: [
+        {
+          path: "device-not-support",
+          name: "DeviceNotSupport",
+          component: DeviceNotSupport
+        }
+      ]
     }
 
 ]
