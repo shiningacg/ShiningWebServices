@@ -117,11 +117,12 @@
 </template>
 
 <script>
+import cookie from "js-cookie"
 export default {
   created() {
-    // if (this.$client.Authed()) {
-    //   this.$router.push("/dashboard")
-    // }
+    if (this.$client.Authed()) {
+      this.$router.push("/dashboard")
+    }
   },
   name: "Login",
   data(){
@@ -148,7 +149,12 @@ export default {
     },
     Login() {
       this.$client.Auth(this.user,this.password)
-          .then(()=> {
+          .then((res)=> {
+            console.log(res)
+            cookie.set('token', res.token,{expires: 7})
+            // TODO: 不止为何...
+            this.$client.token = res.token
+            this.$client.Reload()
             this.$router.push("/dashboard")
           })
       .catch(err => {

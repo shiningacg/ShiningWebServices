@@ -10,7 +10,7 @@
                   size="64"
               >
                 <v-img
-                    :src="avatar"
+                    :src="avatarUrl"
                 >
                 </v-img>
               </v-avatar>
@@ -61,7 +61,7 @@
                   size="128"
               >
                 <v-img
-                    :src="avatar"
+                    :src="avatarUrl"
                 >
                   <v-sheet height="100%" width="100%" class="d-flex justify-center align-center" style="background-color: rgba(0,0,0,.5)">
                     <div class="white--text">
@@ -82,7 +82,7 @@
                         label="简介"
                         rows="3"
                         :placeholder="description"
-                        :value="info.description"
+                        v-model="info.description"
                     ></v-textarea>
                   </v-col>
                   <v-col cols="12" class="d-flex align-center">
@@ -90,23 +90,13 @@
                     <v-text-field
                         append-outer-icon="mdi-account"
                         :placeholder="name"
-                        :value="info.name"
+                        v-model="info.name"
                     >
-                    </v-text-field>
-                  </v-col>
-                  <v-col cols="12" class="d-flex align-center">
-                    <div style="width: 80px" class="text-end pr-4" >邮箱：</div>
-                    <v-text-field
-                        append-outer-icon="mdi-account"
-                        :placeholder="email"
-                        :value="info.email"
-                    >
-
                     </v-text-field>
                   </v-col>
                 </v-row>
                 <div class="d-flex justify-end pt-8 pb-4" >
-                  <v-btn color="primary">save</v-btn>
+                  <v-btn color="primary" @click="setInfo">save</v-btn>
                 </div>
               </v-card>
             </div>
@@ -148,6 +138,26 @@
           </div>
         </v-card>
       </v-col>
+      <v-dialog
+          v-model="dialog"
+          persistent
+          width="300"
+      >
+        <v-card
+            color="primary"
+            dark
+        >
+          <v-card-title>
+            {{dialogMsg.title}}
+          </v-card-title>
+          <v-card-text>
+            {{dialogMsg.content}}
+          </v-card-text>
+          <v-card-actions>
+            <v-btn @click="dialog=false">确定</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-row>
 </template>
 <script>
@@ -157,14 +167,28 @@
     name: "User",
     props: { input: {} },
     created() {
-      if (is_dev_env()) {
-        this.adapter(mock)
-        return
+      // if (is_dev_env()) {
+      //   this.adapter(mock)
+      //   return
+      // }
+      // this.adapter(this.input)
+      this.getInfo()
+    },
+    computed: {
+      avatarUrl() {
+        if (this.avatar === "") {
+          return "https://prince.kingthemes.org/wp-content/uploads/2017/01/473990304_1280x720-1-150x150.jpg"
+        }
+        return this.avatar
       }
-      this.adapter(this.input)
     },
     data() {
       return {
+        dialogMsg: {
+          title: "",
+          content: "",
+        },
+        dialog: false,
         active: 0,
         name: "",
         avatar: "",
@@ -191,6 +215,30 @@
         this.avatar = user.avatar
         this.description = user.description
         this.email = user.email
+      },
+      getInfo() {
+        // TODO: 需要修改
+        this.$client.User.Info(1).then(res => {
+          this.name = res.uname
+          this.avatar = res.public.avatar
+          this.description = res.public.profile
+          console.log(res,this.description)
+        })
+      },
+      setInfo() {
+        console.log(this.info)
+        this.$client.User.SetPublicInfo({
+          profile: this.info.description,
+          nickname: this.info.name
+        }).then(()=> {
+          this.dialogMsg.title = "成功"
+          this.dialogMsg.content = "修改用户信息成功"
+          this.dialog = true
+        }).catch(err => {
+          this.dialogMsg.title = "错误"
+          this.dialogMsg.content = err.message
+          this.dialog = true
+        })
       },
     }
   }
