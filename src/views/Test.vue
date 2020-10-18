@@ -1,7 +1,7 @@
 <template>
   <v-container>
-    <uploader v-if="false"/>
-    <pic-uploader/>
+    <uploader v-if="true"/>
+    <pic-uploader v-if="false"/>
   </v-container>
 </template>
 
