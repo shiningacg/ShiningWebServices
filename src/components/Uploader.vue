@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-row class="sortable">
+    <v-row class="sortable" v-if="multi">
       <v-col cols="6" md="3" v-for="(item,key) in this.items" :key="key"
              draggable="true"
              @dragstart="handleDragStart($event, item)"
@@ -17,16 +17,30 @@
       </v-col>
       <v-col cols="6" md="3" class="uploader">
         <v-card flat class="d-flex align-center justify-center" height="200" width="100%" style="border: 2px dashed grey" @click="activeFileSelector">
-          <div class="justify-center">
-            <div class="text-center"><v-icon size="48">mdi-plus</v-icon></div>
-            <div class="pt-2 grey--text">添加图片</div>
-          </div>
+          <v-img src="">
+            <div class="justify-center">
+              <div class="text-center"><v-icon size="48">mdi-plus</v-icon></div>
+              <div class="pt-2 grey--text">添加图片</div>
+            </div>
+          </v-img>
         </v-card>
       </v-col>
-      <div v-show="false">
-        <input type="file" ref="file" @change="addFile($event)"/>
-      </div>
     </v-row>
+    <v-row v-if="!multi">
+      <v-col cols="12" class="uploader">
+          <v-img :src="getHolder(item)">
+            <v-card flat class="d-flex align-center justify-center transparent" height="100%" width="100%" style="border: 2px dashed grey" @click="activeFileSelector">
+              <div class="justify-center">
+                <div class="text-center"><v-icon size="48">mdi-plus</v-icon></div>
+                <div class="pt-2 grey--text">上传图片</div>
+              </div>
+            </v-card>
+          </v-img>
+      </v-col>
+    </v-row>
+    <div v-show="false">
+      <input type="file" ref="file" @change="addFile($event)"/>
+    </div>
   </div>
 </template>
 <script>
@@ -34,34 +48,47 @@
   import is_dev_env from "../utils/is_dev_env";
   export default {
     name: "Uploader",
-    props: {},
+    props: {
+      multi: Boolean,
+      src: String
+    },
     created() {
-      if (is_dev_env()) {
-        this.items = mock.items
-        return
-      }
     },
     data() {
       return {
+        item : undefined,
         items:[],
         dragging: null
       }
     },
     methods: {
+      reset() {
+        this.item = undefined
+      },
       activeFileSelector() {
         this.$refs.file.click()
       },
+      getHolder(item){
+        if (this.item === undefined) {
+          return this.src
+        }
+        return item.url === undefined ? item.src : item.url
+      },
       addFile(el) {
-        const _this = this
         const file = el.target.files[0]
-        if (file == undefined) {
+        if (file === undefined) {
           return
         }
         const reader = new FileReader()
         reader.readAsDataURL(file)
-        reader.onload = function(e) {
-          _this.items.push({name:file.filename,src:this.result,file:file})
+        reader.onload = (el) => {
+          const f = {name:file.filename,src:el.target.result,file:file}
+          if (this.multi) {
+            this.items.push(f)
+          }
+          this.item = f
         }
+        this.$emit("selected",file)
       },
       removeFile(key) {
         this.items.splice(key,1)

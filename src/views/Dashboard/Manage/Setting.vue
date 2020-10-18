@@ -7,14 +7,9 @@
         <v-row>
           <v-col cols="12" md="6" lg="6">
             <v-card flat>
-              <v-img
-                  :src="cover.current"
-              ></v-img>
+              <Uploader ref="uploader" :src="cover.current" @selected="setPic()"></Uploader>
               <div class="text-center pt-2 ">当前封面</div>
             </v-card>
-          </v-col>
-          <v-col cols="12" md="6" lg="6">
-
           </v-col>
         </v-row>
       </v-col>
@@ -116,13 +111,15 @@
 </template>
 
 <script>
+import Uploader from "@/components/Uploader";
   export default {
     name:"Editor",
     components: {
-
+      Uploader
     },
     data() {
       return {
+        pic: undefined,
         cover: {
           current: "/cover-normal.jpg",
           temp: ""
@@ -141,5 +138,14 @@
         }
       }
     },
+    methods: {
+      setPic(file) {
+        console.log(file)
+        this.pic = file
+      },
+      resetPic() {
+        this.$refs.uploader.reset()
+      }
+    }
   }
 </script>
