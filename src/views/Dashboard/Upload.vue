@@ -39,15 +39,15 @@
             <v-col cols="12">
               <span class="grey--text">作品信息:</span>
             </v-col>
-            <v-col md="6" sm="12" xl="12" cols="12" class="d-flex justify-center pb-0">
+            <v-col md="6" sm="12" xl="12" cols="12" class="d-flex justify-center pb-0 pr-11">
               <v-text-field
                   label="原名称"
                   class=""
                   outlined
                   color="blue"
                   background-color="white"
-                  append-outer-icon="mdi-information"
-                  @click:prepend=""
+                  append-icon="mdi-information"
+                  v-model="data.origin"
               >
               </v-text-field>
             </v-col>
@@ -58,6 +58,7 @@
                   outlined
                   color="blue"
                   background-color="white"
+                  v-model="data.translation"
               >
               </v-text-field>
             </v-col>
@@ -68,6 +69,7 @@
                   outlined
                   color="blue"
                   background-color="white"
+                  v-model="data.author"
               >
               </v-text-field>
             </v-col>
@@ -139,7 +141,11 @@
         result: {
           id:"c195",
           url:"http://localhost:8080/watch",
-
+        },
+        data: {
+          origin: "",
+          translation: "",
+          author: "",
         }
       }
     },

@@ -107,7 +107,7 @@
         <v-row class="pt-4">
           <!--TODO:自动扩大-->
           <v-col md="1" v-for="i in 5" :key="i">
-            <v-btn elevation="0" color="primary" @click="$router.push('/dashboard/edit/'+i)"><span class="text-truncate caption font-weight-bold">第193话</span></v-btn>
+            <v-btn elevation="0" color="primary"><span class="text-truncate caption font-weight-bold">第193话</span></v-btn>
           </v-col>
         </v-row>
       </v-col>

@@ -26,7 +26,7 @@
       </div>
       <div class="spacer"></div>
       <div class="d-flex align-end">
-        <v-btn color="primary" class="subtitle-1 font-weight-bold">编辑</v-btn>
+        <v-btn color="primary" class="subtitle-1 font-weight-bold" @click="select">编辑</v-btn>
       </div>
     </v-card>
     <v-divider></v-divider>
@@ -86,6 +86,11 @@
           comment: 0,
           collect: 0
         }
+      },
+      select() {
+        this.$emit("manage",{
+          title: this.title,
+        })
       }
     }
   }

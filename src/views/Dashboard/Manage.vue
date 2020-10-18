@@ -1,38 +1,40 @@
 <template>
   <v-container class="pt-0">
-    <v-breadcrumbs class="pt-0 pl-0" :items="crumbs" large></v-breadcrumbs>
-    <Prject v-if="false"/>
-    <Project_2 v-if="false"/>
-    <Setting v-if="true"/>
+    <div class="pb-4 d-flex align-center">
+      <v-btn text depressed @click="crumbs.pop()">管理</v-btn>
+      <div v-if="crumbs.length !== 0">
+        <span class="pr-5">/</span>
+        <span class="body-2 grey--text text--darken-2">{{crumbs[0].text}}</span>
+      </div>
+    </div>
+    <Project @manage="manageItem" v-if="crumbs.length === 0"/>
+    <Setting  v-if="crumbs.length !== 0"/>
   </v-container>
 </template>
 
 <script>
-  import Prject from "./Project"
-  import Setting from "./Setting"
-  import Project_2 from "@/views/Dashboard/Project_2";
+  import Setting from "./Manage/Setting"
+  import Project from "@/views/Dashboard/Manage/Project_2";
   export default {
     name:"Manage",
     components: {
-      Prject,
       Setting,
-      Project_2
+      Project
     },
     data() {
       return {
-        crumbs: [
-        {
-          text: '管理',
-          disabled: false,
-          href: 'breadcrumbs_dashboard',
-        },
-        {
-          text: 'c196',
-          disabled: false,
-          href: 'breadcrumbs_link_1',
-        }
-      ],
+        crumbs: [],
       }
+    },
+    methods: {
+      manageItem(item) {
+        console.log(item)
+        this.crumbs.push({
+          text: item.title,
+          disabled: true,
+          href: ''
+        })
+      },
     }
   }
 </script>
