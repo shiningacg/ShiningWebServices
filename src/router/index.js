@@ -12,83 +12,94 @@ import Error from "@/views/Error/Main"
 
 Vue.use(VueRouter)
 
-  const routes = [
+const routes = [
   {
     path: '/',
     name: 'Home',
+    redirect: '/latest',
     component: Home,
     children: [
       {
         path: "latest",
         name: "Latest",
-        component:()=>import("@/views/Home/Latest")
+        component: () => import("@/views/Home/Latest")
       },
       {
         path: "project",
         name: "Project",
-        component:()=>import("@/views/Home/Project")
+        component: () => import("@/views/Home/Project")
       }
     ]
   },
-    {
-      path: "/watch",
-      name: "Watch",
-      component: Watch
-    },
-    {
-      path: "/login",
-      name: "Login",
-      component: Login
-    },
-    {
-      path: "/comic",
-      name: "Comic",
-      component: Comic
-    },
-    {
-      path: "/dashboard",
-      name: "Dashboard",
-      component: Dashboard,
-      children: [
-        {
-          path: "edit/:id",
-          name: "Editor",
-          component: Editer
-        },
-        {
-          path: "new",
-          name:"New",
-          component:()=>import("@/views/Dashboard/Upload")
-        },
-        {
-          path: "manage",
-          name:"Manage",
-          component:()=>import("@/views/Dashboard/Manage")
-        },
-        {
-          path: "user",
-          name: "User",
-          component: ()=>import("@/views/Dashboard/User")
-        }
-      ]
-    },
-    {
-      path: "/test",
-      name: "Test",
-      component: Test
-    },
-    {
-      path: "/error",
-      name: "Error",
-      component: Error,
-      children: [
-        {
-          path: "device-not-support",
-          name: "DeviceNotSupport",
-          component: ()=>import("@/views/Error/DeviceNotSupport")
-        }
-      ]
-    }
+  {
+    path: "/watch",
+    name: "Watch",
+    component: Watch
+  },
+  {
+    path: "/info/:id",
+    name: "Info",
+    component: () => import("@/views/Info/Main")
+  },
+  {
+    path: "/login",
+    name: "Login",
+    component: Login
+  },
+  {
+    path: "/comic",
+    name: "Comic",
+    component: Comic
+  },
+  {
+    path: "/dashboard",
+    name: "Dashboard",
+    component: Dashboard,
+    children: [
+      {
+        path: "/",
+        redirect: "/dashboard/user",
+        name: "home"
+      },
+      {
+        path: "edit/:id",
+        name: "Editor",
+        component: Editer
+      },
+      {
+        path: "new",
+        name: "New",
+        component: () => import("@/views/Dashboard/Upload")
+      },
+      {
+        path: "manage",
+        name: "Manage",
+        component: () => import("@/views/Dashboard/Manage")
+      },
+      {
+        path: "user",
+        name: "User",
+        component: () => import("@/views/Dashboard/User")
+      }
+    ]
+  },
+  {
+    path: "/test",
+    name: "Test",
+    component: Test
+  },
+  {
+    path: "/error",
+    name: "Error",
+    component: Error,
+    children: [
+      {
+        path: "device-not-support",
+        name: "DeviceNotSupport",
+        component: () => import("@/views/Error/DeviceNotSupport")
+      }
+    ]
+  }
 
 ]
 
