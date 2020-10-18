@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="d-flex justify-end pa-0" style="height:100%;background-image: linear-gradient(to bottom right,rgb(114,135,254),rgb(130,88,186));">
+  <v-container fluid class="d-flex justify-end pa-0" style="height:100%;background-size: cover;background-image: url('/genshin-impack.jpeg');">
     <v-card v-show="login" height="100%" width="400" elevation="20" color="rgba(0,0,0,.5)">
         <div class="text-center title-logo col-12 pt-6">ShiningACG</div>
         <div class="form pa-6 pb-0">
@@ -119,9 +119,9 @@
 <script>
 export default {
   created() {
-    if (this.$client.Authed()) {
-      this.$router.push("/dashboard")
-    }
+    // if (this.$client.Authed()) {
+    //   this.$router.push("/dashboard")
+    // }
   },
   name: "Login",
   data(){
