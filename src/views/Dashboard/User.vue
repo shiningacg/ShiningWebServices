@@ -86,7 +86,7 @@
                     ></v-textarea>
                   </v-col>
                   <v-col cols="12" class="d-flex align-center">
-                    <div style="width: 80px" class="text-end pr-4">用户名：</div>
+                    <div style="width: 80px" class="text-end pr-4">昵称：</div>
                     <v-text-field
                         append-outer-icon="mdi-account"
                         :placeholder="name"
@@ -108,31 +108,31 @@
                 <div style="width: 80px;" class="mr-2">当前密码：</div>
                 <v-text-field
                     :type="pwd.show1?'text':'password'"
-                    :value="pwd.currentPWD"
+                    v-model="pwd.currentPWD"
                     :append-icon="pwd.show1?'mdi-eye-off':'mdi-eye'"
                     @click:append="pwd.show1=!pwd.show1"
                 ></v-text-field>
               </div>
               <div class="d-flex align-center">
-                <div style="width: 80px;" class="mr-2">重置密码：</div>
+                <div style="width: 80px;" class="mr-2">新密码：</div>
                 <v-text-field
                     :type="pwd.show2?'text':'password'"
-                    :value="pwd.newPWD"
+                    v-model="pwd.newPWD"
                     :append-icon="pwd.show2?'mdi-eye-off':'mdi-eye'"
                     @click:append="pwd.show2=!pwd.show2"
                 ></v-text-field>
               </div>
               <div class="d-flex align-center">
-                <div style="width: 80px;" class="mr-2">确认密码：</div>
+                <div style="width: 80px;" class="mr-2">重复：</div>
                 <v-text-field
                     :type="pwd.show3?'text':'password'"
-                    :value="pwd.confirmPWD"
+                    v-model="pwd.confirmPWD"
                     :append-icon="pwd.show3?'mdi-eye-off':'mdi-eye'"
                     @click:append="pwd.show3=!pwd.show3"
                 ></v-text-field>
               </div>
               <div class="d-flex justify-end pt-8 pr-4">
-                <v-btn color="primary" elevation="0">确认</v-btn>
+                <v-btn color="primary" @click="this.setPassword" elevation="0">确认</v-btn>
               </div>
             </v-card>
           </div>
@@ -216,6 +216,11 @@
         this.description = user.description
         this.email = user.email
       },
+      msgBox(title,message) {
+        this.dialogMsg.title = title
+        this.dialogMsg.content = message
+        this.dialog = true
+      },
       getInfo() {
         // TODO: 需要修改
         this.$client.User.Info(1).then(res => {
@@ -225,19 +230,28 @@
           console.log(res,this.description)
         })
       },
+      setPassword() {
+        const old = this.pwd.currentPWD
+        const pwd = this.pwd.newPWD
+        if (this.pwd.confirmPWD !== this.pwd.newPWD) {
+          this.msgBox("错误","两次输入的新密码不相同")
+          return
+        }
+        this.$client.User.SetAuth(old,pwd).then(()=> {
+          this.msgBox("成功","修改密码成功")
+        }).catch(err => {
+          this.msgBox("错误",err.message)
+        })
+      },
       setInfo() {
         console.log(this.info)
         this.$client.User.SetPublicInfo({
           profile: this.info.description,
           nickname: this.info.name
         }).then(()=> {
-          this.dialogMsg.title = "成功"
-          this.dialogMsg.content = "修改用户信息成功"
-          this.dialog = true
+          this.msgBox("成功","修改用户信息成功")
         }).catch(err => {
-          this.dialogMsg.title = "错误"
-          this.dialogMsg.content = err.message
-          this.dialog = true
+          this.msgBox("错误",err.message)
         })
       },
     }
