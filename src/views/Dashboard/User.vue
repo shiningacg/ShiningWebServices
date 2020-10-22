@@ -237,7 +237,7 @@
           this.msgBox("错误","两次输入的新密码不相同")
           return
         }
-        this.$client.User.SetAuth(old,pwd).then(()=> {
+        this.$client.User.SetPassword(old,pwd).then(()=> {
           this.msgBox("成功","修改密码成功")
         }).catch(err => {
           this.msgBox("错误",err.message)
