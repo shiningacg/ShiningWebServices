@@ -91,14 +91,14 @@
         </v-col>
         <v-col cols="11">
           <v-col cols="6">
-            <Uploader height="200" @selected="coverSelected"/>
+            <Uploader :height="200" @selected="coverSelected"/>
             <div class="text-center grey--text text--darken-2">封面图片</div>
           </v-col>
         </v-col>
       </v-row>
       <v-card-actions class="justify-end">
         <v-col cols="11"></v-col>
-        <v-col class=""><v-btn color="info">创建</v-btn></v-col>
+        <v-col class=""><v-btn color="info" @click="createCollection">创建</v-btn></v-col>
       </v-card-actions>
     </v-card>
   </v-container>
@@ -129,6 +129,43 @@ export default {
   methods: {
     coverSelected(file) {
       this.cover = file
+    },
+    // 进行消息的转接
+    translateStatus(status) {
+      switch (status) {
+        case "已完结":
+          return 0
+      }
+      return 0
+    },
+    async createCollection() {
+      // checkArgs
+      try {
+        // 发送创建请求
+        await this.$client.Collection.New({
+            profile: this.profile,
+            translation: this.translation,
+            origin: this.origin,
+            status: this.translateStatus(this.status)
+        })
+        console.log("hi")
+        // 上传文件
+        const cover = await this.$client.File.Upload(this.cover)
+        console.log(cover)
+        // 更新数据
+        await this.$client.Collection.UpdateInfo({
+          appearance: {
+            cover: cover.token
+          }
+        })
+        this.msgBox("成功：","成功创建")
+      } catch (err) {
+        this.msgBox("失败",err)
+      }
+    },
+    // 展示messagebox
+    msgBox(title,message) {
+      console.log(title,message)
     }
   }
 }
