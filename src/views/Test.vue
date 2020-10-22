@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <uploader v-if="true"/>
+    <uploader v-if="true" :multi="true"/>
     <pic-uploader v-if="false"/>
   </v-container>
 </template>

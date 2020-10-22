@@ -69,7 +69,7 @@ const routes = [
       {
         path: "new",
         name: "New",
-        component: () => import("@/views/Dashboard/Upload")
+        component: () => import("@/views/Dashboard/New")
       },
       {
         path: "manage",
