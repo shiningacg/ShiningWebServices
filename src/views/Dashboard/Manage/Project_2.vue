@@ -43,9 +43,14 @@
       if(is_dev_env() && this.input==undefined) {
         this.adapter(mock.comic)
       }
+      if (this.value !== undefined) {
+        this.adapter(this.value)
+        return
+      }
+      this.adapter()
     },
     props: {
-      input:{}
+      value:undefined
     },
     data() {
       return {
@@ -64,8 +69,9 @@
     },
     methods: {
       adapter(collection) {
+        console.log(collection)
         this.cover = collection.cover
-        this.title = collection.name
+        this.title = collection.name === undefined ? collection.title : collection.name
         switch (collection.type) {
           case "comic":
             this.icon = "mdi-book-open-variant"
@@ -76,8 +82,8 @@
             this.icon = ""
             break
           default:
-            this.type = ""
-            this.icon = "e"
+            this.type = "视频"
+            this.icon = "mdi-book-open-variant"
         }
         this.time = unix_time(collection.create_time,"second")
         this.info = {
