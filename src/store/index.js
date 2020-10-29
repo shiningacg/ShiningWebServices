@@ -5,11 +5,13 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    projects: new Map
+    projectsTracker: 0,
+    projects: new Map,
   },
   mutations: {
     addProject(stats,project) {
       stats.projects.set(project.cid,project)
+      stats.projectsTracker++
     }
   },
   actions: {

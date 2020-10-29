@@ -25,7 +25,7 @@
               <v-col cols="12" class="d-flex justify-center pb-0">
                 <v-text-field
                     label="原名称"
-                    :placeholder="info.name"
+                    :placeholder="info.origin"
                     outlined
                     color="blue"
                     background-color="white"
@@ -37,18 +37,7 @@
               <v-col cols="12" class="d-flex justify-center pb-0">
                 <v-text-field
                     label="中文译名"
-                    :placeholder="info.translate"
-                    class="pr-8"
-                    outlined
-                    color="blue"
-                    background-color="white"
-                >
-                </v-text-field>
-              </v-col>
-              <v-col cols="12" class="d-flex justify-center pb-0 pt-1">
-                <v-text-field
-                    label="作者名称"
-                    :placeholder="info.author"
+                    :placeholder="info.translation"
                     class="pr-8"
                     outlined
                     color="blue"
@@ -63,18 +52,6 @@
             <v-row>
               <v-col cols="12">
                 <span class="grey--text">详细信息:</span>
-              </v-col>
-              <v-col class="pb-0" cols="12">
-                <v-select
-                    v-model="info.tags.value"
-                    :items="info.tags.items"
-                    outlined
-                    chips
-                    flat
-                    label="类型标签"
-                    multiple
-                    solo
-                ></v-select>
               </v-col>
               <v-col cols="12" class="d-flex justify-center pb-0">
                 <v-text-field
@@ -96,13 +73,17 @@
           <div>内容：</div>
           <div class="spacer"></div>
           <div>
-            <v-btn elevation="0" color="green" dark><v-icon>mdi-plus</v-icon>添加</v-btn>
+            <v-btn elevation="0" color="green" dark>
+              <v-icon>mdi-plus</v-icon>
+              添加
+            </v-btn>
           </div>
         </div>
         <v-row class="pt-4">
           <!--TODO:自动扩大-->
           <v-col md="1" v-for="i in 5" :key="i">
-            <v-btn elevation="0" color="primary"><span class="text-truncate caption font-weight-bold">第193话</span></v-btn>
+            <v-btn elevation="0" color="primary"><span class="text-truncate caption font-weight-bold">第193话</span>
+            </v-btn>
           </v-col>
         </v-row>
       </v-col>
@@ -112,40 +93,61 @@
 
 <script>
 import Uploader from "@/components/Uploader";
-  export default {
-    name:"Editor",
-    components: {
-      Uploader
-    },
-    data() {
-      return {
-        pic: undefined,
-        cover: {
-          current: "/cover-normal.jpg",
-          temp: ""
-        },
-        info: {
-          name: "py",
-          translate: "朋友",
-          author: "shlande",
-          tags: {
-            items: ['foo', 'bar', 'fizz', 'buzz'],
-            value: [],
-          },
-          sources: {
-            moegirl: "http://"
-          }
+
+export default {
+  name: "Editor",
+  components: {
+    Uploader
+  },
+  created() {
+    this.loadCollection()
+  },
+  data() {
+    return {
+      pic: undefined,
+      cover: {
+        current: "",
+        temp: ""
+      },
+      info: {
+        origin: "",
+        translation: "",
+        sources: {
+          moegirl: "https://zh.moegirl.org.cn/"
         }
       }
-    },
-    methods: {
-      setPic(file) {
-        console.log(file)
-        this.pic = file
-      },
-      resetPic() {
-        this.$refs.uploader.reset()
+    }
+  },
+  watch: {
+    '$store.state.projectsTracker'() {
+      this.loadCollection()
+    }
+  },
+  methods: {
+    loadCollection() {
+      const cid = this.$route.params['id']
+      const cl = this.$store.state.projects.get(cid)
+      if (cl === undefined) {
+        console.log("尚未初始化")
       }
+      this.adapter(cl)
+    },
+    async adapter(collection) {
+      if (collection === undefined) {
+        return
+      }
+      const file = await this.$client.File.Download(collection.appearance.cover)
+      this.cover.current = file.url
+      this.info.origin = collection.detail.origin
+      this.info.translation = collection.detail.translation
+    },
+    setPic(file) {
+      console.log(file)
+      this.pic = file
+    },
+    resetPic() {
+      this.$refs.uploader.reset()
     }
   }
+}
 </script>

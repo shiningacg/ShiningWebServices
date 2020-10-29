@@ -6,7 +6,7 @@
       </router-link>
       <div v-if="current !== undefined">
         <span class="pr-4">/</span>
-        <span class="body-2 grey--text text--darken-2">{{ current.title }}</span>
+        <span class="body-2 grey--text text--darken-2">{{ getTitle }}</span>
       </div>
     </div>
       <v-container>
@@ -38,6 +38,11 @@ export default {
     return {
       // 所有的项目
       current: undefined,
+    }
+  },
+  computed: {
+    getTitle() {
+      return this.current.detail.translation
     }
   },
   methods: {
