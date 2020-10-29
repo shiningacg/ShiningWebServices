@@ -25,13 +25,13 @@ export default {
     Setting,
     Project
   },
+  created() {
+    this.watchRouter()
+  },
   watch:{
     // 监听路由变化，变化顶部菜单栏
     $route(to,from){
-      // 获取路由参数
-      const cid = this.$route.params['id']
-      this.current = this.$store.state.projects.get(cid)
-      console.log(this.current)
+      this.watchRouter()
     }
   },
   data() {
@@ -40,6 +40,28 @@ export default {
       current: undefined,
     }
   },
-
+  methods: {
+    async watchRouter() {
+      // 获取路由参数
+      const cid = this.$route.params['id']
+      if (cid === undefined) {
+        this.current = undefined
+        return
+      }
+      console.log(this.$route)
+      const projects = this.$store.state.projects
+      if (!projects.has(cid)) {
+        try {
+          const cl = await this.$client.Collection.Search({cid: Number(cid)})
+          const project = cl.result[0]
+          this.$store.commit('addProject',project)
+        } catch (e) {
+          console.error(e)
+          return
+        }
+      }
+      this.current = projects.get(cid)
+    }
+  }
 }
 </script>
