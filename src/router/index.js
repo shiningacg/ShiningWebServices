@@ -6,7 +6,6 @@ import Login from '../views/Login/Login'
 import Comic from "../views/Comic/Comic"
 import Dashboard from "@/views/Dashboard/Main"
 import Test from "@/views/Test"
-import Editer from "@/views/Dashboard/Editer";
 
 import Error from "@/views/Error/Main"
 
@@ -62,24 +61,29 @@ const routes = [
         name: "home"
       },
       {
-        path: "edit/:id",
-        name: "Editor",
-        component: Editer
-      },
-      {
         path: "new",
         name: "New",
-        component: () => import("@/views/Dashboard/New")
+        component: () => import("@/views/Dashboard/New/New")
       },
       {
         path: "manage",
         name: "Manage",
-        component: () => import("@/views/Dashboard/Manage")
+        component: () => import("@/views/Dashboard/Manage/Main"),
+        children: [{
+          path: "edit/:id",
+          name: "Editor",
+          component: () => import("@/views/Dashboard/Manage/Setting")
+        },
+          { path: "",
+            name: "Home",
+            component: () => import("@/views/Dashboard/Manage/Show")
+          }
+        ]
       },
       {
         path: "user",
         name: "User",
-        component: () => import("@/views/Dashboard/User")
+        component: () => import("@/views/Dashboard/User/User")
       }
     ]
   },

@@ -1,85 +1,120 @@
 <template>
-  <v-card class="pa-4">
-    <div class="">
-      <span class="grey--text body-2">我参与的项目:</span>
-    </div>
-    <!--单个项目展示-->
-    <div class="pt-2">
-      <v-row>
-        <v-col cols="12" md="6" lg="6" v-for="(item,key) in myProjects" :key="key">
-          <v-card height="290" max-width="1160" class="pa-3" style="border-radius: 12px;" flat>
-            <v-row class="pa-0">
-              <!--图片存放-->
-              <v-col class="pa-0 pl-3">
-                <div style="border-radius: 12px;overflow: hidden;">
-                  <v-img
-                      :src="item.cover"
-                      height="266"
-                      :aspect-ratio="2/1"
-                      cover
-                  >
-                    <div class="d-flex align-end" style="height: 100%">
-                      <v-card dark class="pa-4 d-flex align-center" color="rgba(0,0,0,.5)" width="100%">
-                        <div class="text-truncate font-weight-bold" style="max-width: 230px">{{item.title}}</div>
-                        <div class="type pl-2"><v-icon>{{item.icon}}</v-icon></div>
-                        <div class="spacer"></div>
-                        <div class="bottoms">
-                          <v-btn fab text small><v-icon>mdi-camera-outline</v-icon></v-btn>
-                          <v-btn fab text small><v-icon>mdi-trash-can</v-icon></v-btn>
-                        </div>
-                      </v-card>
-                    </div>
-                  </v-img>
-                </div>
-              </v-col>
-            </v-row>
-          </v-card>
-        </v-col>
-      </v-row>
-    </div>
+  <v-card flat class="pa-4">
+    <v-card class="d-flex mb-3" flat>
+      <div style="border-radius: 6px;overflow: hidden">
+        <v-img height="200" width="320" :src="cover"></v-img>
+      </div>
+      <div class="pl-6">
+        <div class="d-flex align-center">
+          <v-chip>
+            <v-icon class="type pr-2 title">{{icon}}</v-icon>
+            <span class="subtitle-1">{{type}}</span>
+          </v-chip>
+          <div>
+            <!-- 主标题 -->
+            <span class="pl-4 heading font-weight-bold">{{title}}</span>
+            <!-- 副标题 -->
+            <span v-if="subtitle !== ''" class="grey--text text--lighten-1 ">
+              <span class="pl-2 pr-2">/</span>
+              <span class="caption">{{subtitle}}</span>
+            </span>
+          </div>
+        </div>
+
+        <!--文件展示？-->
+        <div class="_info m" style="height: 140px">
+          <v-row>
+            <v-col>
+              <span class="grey--text text--darken-1">{{profile}}</span>
+            </v-col>
+          </v-row>
+        </div>
+        <!-- 数据信息展示 -->
+        <div class="d-flex grey--text">
+          <div class="pl-2 d-flex align-center"><v-icon color="grey" class="pr-1">mdi-eye</v-icon><span class="body-2">{{info.view}}</span></div>
+          <div class="pl-2 d-flex align-center"><v-icon color="grey" class="pr-1">mdi-heart</v-icon><span class="body-2">{{info.liked}}</span></div>
+          <div class="pl-2 d-flex align-center"><v-icon color="grey" class="pr-1">mdi-comment</v-icon><span class="body-2">{{info.comment}}</span></div>
+          <div class="pl-2 d-flex align-center"><v-icon color="grey" class="pr-1">mdi-bookmark</v-icon><span class="body-2">{{info.collect}}</span></div>
+        </div>
+      </div>
+      <div class="spacer"></div>
+      <div class="d-flex align-end">
+        <v-btn color="primary" class="subtitle-1 font-weight-bold" @click="select">编辑</v-btn>
+      </div>
+    </v-card>
+    <v-divider></v-divider>
   </v-card>
 </template>
 
 <script>
   import mock from "@/mock/collection.json"
   import is_dev_env from "@/utils/is_dev_env";
+  import unix_time from "@/utils/unix_time";
   export default {
-    name:"Project",
-    components:{},
+    name: "Project",
     created() {
-      if (is_dev_env()) {
-        this.adapter([mock.video,mock.comic])
+      if(is_dev_env() && this.input==undefined) {
+        this.adapter(mock.comic)
+      }
+      if (this.value !== undefined) {
+        this.adapter(this.value)
         return
       }
+      this.adapter()
+    },
+    props: {
+      value:undefined
     },
     data() {
       return {
-        myProjects : [
-          {
-            cover: "",
-            title: "",
-            icon: ""
-          }
-        ]
+        cover: "",
+        title: "",
+        subtitle: "",
+        profile: "",
+        icon: "",
+        type: "",
+        time: "",
+        info: {
+          view:0,
+          liked:0,
+          comment:0,
+          collect:0,
+        }
       }
     },
     methods: {
-      adapter(collections) {
-        this.myProjects = []
-        for(let collection of collections) {
-          let icon
-          switch (collection.type) {
-            case "comic":
-              icon = "mdi-book-open-variant"
-              break
-            case "video":
-              icon = ""
-              break
-            default:
-              icon = "e"
-          }
-          this.myProjects.push({cover: collection.cover,title: collection.name,icon: icon})
+      adapter(collection) {
+        console.log(collection)
+        this.cover = collection.cover
+        this.title = collection.name === undefined ? collection.title : collection.name
+        this.profile = collection.profile
+        this.subtitle = collection.subtitle
+        switch (collection.type) {
+          case "comic":
+            this.icon = "mdi-book-open-variant"
+            this.type = "漫画"
+            break
+          case "video":
+            this.type = "视频"
+            this.icon = ""
+            break
+          default:
+            this.type = "视频"
+            this.icon = "mdi-book-open-variant"
         }
+        // TODO: 更新时间获取
+        this.time = unix_time(collection.create_time,"second")
+        this.info = {
+          view: collection.view,
+          liked: 0,
+          comment: 0,
+          collect: 0
+        }
+      },
+      select() {
+        this.$emit("manage",{
+          title: this.title,
+        })
       }
     }
   }

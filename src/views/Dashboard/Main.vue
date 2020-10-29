@@ -43,6 +43,7 @@
 </template>
 
 <script>
+// TODO：使用路由参数取代变量检测
   export default {
     name: "Dashboard",
     data() {
@@ -96,4 +97,10 @@
   .wrapper {
     border-bottom: 3px solid #0064f9;
   }
+</style>
+
+<style>
+a {
+  text-decoration: none;
+}
 </style>
