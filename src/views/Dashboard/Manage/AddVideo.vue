@@ -1,5 +1,5 @@
 <template>
-  <v-dialog width="1200" v-model="value">
+  <v-dialog width="1200" v-model="show">
     <v-card>
       <v-card-title>
         添加内容
@@ -56,11 +56,18 @@ export default {
   name: "AddVideo",
   data() {
     return {
+      show: false,
       title: '',
       chapterName: '',
       file: undefined,
+      fid: '',
       status: 'waiting',
       process: 0
+    }
+  },
+  watch: {
+    value(val) {
+      this.show = val
     }
   },
   computed: {
@@ -89,11 +96,6 @@ export default {
       return this.status !== 'waiting'
     },
   },
-  watch: {
-    value() {
-      this.$emit('input',this.value)
-    }
-  },
   methods: {
     unShow() {
       this.$emit('input',false)
@@ -115,10 +117,10 @@ export default {
       this.status = 'uploading'
       this.$client.File.Upload(this.file, {
         onUploadProgress: progressEvent => {
-          console.log(progressEvent)
           this.process = progressEvent.loaded / progressEvent.total * 100 | 0
         }
       }).then(res => {
+        this.fid = res.cid
         console.log(res)
         this.status = 'finish'
       }).catch(err => {
