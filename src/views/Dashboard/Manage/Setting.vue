@@ -7,7 +7,7 @@
         <v-row>
           <v-col cols="12" md="6" lg="6">
             <v-card flat>
-              <Uploader ref="uploader" :src="cover.current" @selected="setPic()"></Uploader>
+              <Uploader ref="uploader" :src="cover.current" v-model="pic"></Uploader>
               <div class="text-center pt-2 ">当前封面</div>
             </v-card>
           </v-col>
@@ -73,7 +73,7 @@
           <div>内容：</div>
           <div class="spacer"></div>
           <div>
-            <v-btn elevation="0" color="green" dark>
+            <v-btn elevation="0" color="green" @click="addVideo" dark>
               <v-icon>mdi-plus</v-icon>
               添加
             </v-btn>
@@ -82,22 +82,26 @@
         <v-row class="pt-4">
           <!--TODO:自动扩大-->
           <v-col md="1" v-for="i in 5" :key="i">
-            <v-btn elevation="0" color="primary"><span class="text-truncate caption font-weight-bold">第193话</span>
+            <v-btn elevation="0" color="primary">
+              <span class="text-truncate caption font-weight-bold">第193话</span>
             </v-btn>
           </v-col>
         </v-row>
       </v-col>
     </v-row>
+      <AddVideo v-model="add.show"></AddVideo>
   </v-card>
 </template>
 
 <script>
 import Uploader from "@/components/Uploader";
+import AddVideo from "@/views/Dashboard/Manage/AddVideo";
 
 export default {
   name: "Editor",
   components: {
-    Uploader
+    Uploader,
+    AddVideo
   },
   created() {
     this.loadCollection()
@@ -115,6 +119,9 @@ export default {
         sources: {
           moegirl: "https://zh.moegirl.org.cn/"
         }
+      },
+      add: {
+        show: false
       }
     }
   },
@@ -124,6 +131,10 @@ export default {
     }
   },
   methods: {
+    addVideo() {
+      console.log("h")
+      this.add.show = true
+    },
     loadCollection() {
       const cid = this.$route.params['id']
       const cl = this.$store.state.projects.get(cid)
@@ -140,10 +151,6 @@ export default {
       this.cover.current = file.url
       this.info.origin = collection.detail.origin
       this.info.translation = collection.detail.translation
-    },
-    setPic(file) {
-      console.log(file)
-      this.pic = file
     },
     resetPic() {
       this.$refs.uploader.reset()
