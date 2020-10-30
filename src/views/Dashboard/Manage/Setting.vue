@@ -132,7 +132,6 @@ export default {
   },
   methods: {
     addVideo() {
-      console.log("h")
       this.add.show = true
     },
     loadCollection() {
