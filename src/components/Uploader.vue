@@ -46,7 +46,7 @@
         </v-img>
       </v-col>
     </v-row>
-    <div v-show="false">
+    <div style="display: none">
       <input type="file" ref="file" @change="addFile($event)"/>
     </div>
   </div>
@@ -58,6 +58,10 @@ import is_dev_env from "../utils/is_dev_env";
 export default {
   name: "Uploader",
   props: {
+    value: {
+      type: File,
+      default: undefined
+    },
     height: {
       type: [Number],
       default: 200,
@@ -81,9 +85,13 @@ export default {
       dragging: null
     }
   },
+  watch: {
+    value(newVal) {
+      this.$emit('input',newVal)
+    }
+  },
   methods: {
     getHeight() {
-      console.log(this)
       // 返回自动设置
       if (this.full) {
         return undefined
@@ -116,7 +124,7 @@ export default {
         }
         this.item = f
       }
-      this.$emit("selected", file)
+      this.$emit('input',file)
     },
     removeFile(key) {
       this.items.splice(key, 1)

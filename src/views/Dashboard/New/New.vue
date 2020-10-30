@@ -91,7 +91,7 @@
         </v-col>
         <v-col cols="11">
           <v-col cols="6">
-            <Uploader :height="200" @selected="coverSelected"/>
+            <Uploader :height="200" v-model="cover"/>
             <div class="text-center grey--text text--darken-2">封面图片</div>
           </v-col>
         </v-col>
@@ -119,7 +119,7 @@ export default {
       translator: "",
       status: "",
       profile: "",
-      cover: {},
+      cover: undefined,
       component: {
         status: ["连载中", "停刊", "已完结", "未开播"],
         emptyPlaceHolder: "说点什么呗~"
@@ -127,9 +127,6 @@ export default {
     }
   },
   methods: {
-    coverSelected(file) {
-      this.cover = file
-    },
     // 进行消息的转接
     translateStatus(status) {
       switch (status) {
@@ -139,6 +136,10 @@ export default {
       return 0
     },
     async createCollection() {
+      if (this.cover === undefined) {
+        console.log("空文件")
+        return
+      }
       // checkArgs
       try {
         // 上传文件
