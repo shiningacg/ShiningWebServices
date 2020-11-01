@@ -6,7 +6,7 @@
       <!--TODO：按钮的切换：当修改被点击的时候，添加按钮消失，增加重置按钮，保存按钮和取消按钮-->
       <!--TODO：当修改选中的时候，card高度拔高，同时hover时提示修改和删除-->
       <div>
-        <v-btn class="ml-2 mr-2" elevation="0" color="green" @click="switchVideo" dark>
+        <v-btn class="ml-2 mr-2" elevation="0" color="green" @click="edit" dark>
           <v-icon class="pr-1" size="16">mdi-pencil</v-icon>
           <span>修改</span>
         </v-btn>
@@ -26,7 +26,7 @@
     </div>
     <!--展示内容的地方-->
     <draggable class="row pr-6 pl-6" v-model="items" :draggable="status.edit ? '.item': ''">
-      <v-col cols="2" class="item" v-for="(item,key) in items">
+      <v-col cols="2" class="item" v-for="(item,key) in items" :key="key">
         <!--hover的时候展示修改和删除-->
         <v-card :elevation="getVideoElevation" outlined>
           <div class="side-bottom" :class="['side-bottom-'+ (status.edit ? 'active': 'inactive')]" @click="deleteVideo(key)"><v-icon size="16">mdi-close</v-icon></div>
@@ -84,18 +84,16 @@ export default {
     deleteVideo(i) {
       this.items.splice(i,1)
     },
-    switchVideo() {
-      this.status.edit = true
-    },
     addVideo() {
       this.add.show = true
     },
     edit() {
-
+      this.status.edit = true
     },
     adapter() {
       this.items = this.value.slice(0)
     },
+    // 用来控制按钮显示用到的
     isSame() {
 
     },

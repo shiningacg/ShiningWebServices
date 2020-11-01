@@ -68,40 +68,26 @@
         </v-row>
       </v-col>
       <!--内容修改-->
-      <v-col cols="12" class="pt-0">
-        <div class="d-flex">
-          <div>内容：</div>
-          <div class="spacer"></div>
-          <div>
-            <v-btn elevation="0" color="green" @click="addVideo" dark>
-              <v-icon>mdi-plus</v-icon>
-              添加
-            </v-btn>
-          </div>
-        </div>
-        <v-row class="pt-4">
-          <!--TODO:自动扩大-->
-          <v-col md="1" v-for="i in 5" :key="i">
-            <v-btn elevation="0" color="primary">
-              <span class="text-truncate caption font-weight-bold">第193话</span>
-            </v-btn>
-          </v-col>
-        </v-row>
-      </v-col>
+      <Chapters v-model="videos"></Chapters>
     </v-row>
-      <AddVideo v-model="add.show"></AddVideo>
+    <v-card-actions>
+      <v-spacer></v-spacer>
+      <v-btn elevation="0" color="primary">
+        <span class="pa-2">提交修改</span>
+      </v-btn>
+    </v-card-actions>
   </v-card>
 </template>
 
 <script>
 import Uploader from "@/components/Uploader";
-import AddVideo from "@/views/Dashboard/Manage/AddVideo";
+import Chapters from "@/views/Dashboard/Manage/Content";
 
 export default {
   name: "Editor",
   components: {
     Uploader,
-    AddVideo
+    Chapters
   },
   created() {
     this.loadCollection()
@@ -120,9 +106,13 @@ export default {
           moegirl: "https://zh.moegirl.org.cn/"
         }
       },
-      add: {
-        show: false
-      }
+      videos: [{
+        vid: '',
+        info: {
+          title: '',
+          profile: '',
+        }
+      }],
     }
   },
   watch: {
@@ -131,8 +121,16 @@ export default {
     }
   },
   methods: {
-    addVideo() {
-      this.add.show = true
+    transformVideo(collection) {
+      const videos = []
+      for (const vdo of collection.videos) {
+        videos.push({
+          vid: vdo.vid,
+          title: vdo.info.title,
+          profile: vdo.info.profile,
+        })
+      }
+      return videos
     },
     loadCollection() {
       const cid = this.$route.params['id']
@@ -150,6 +148,7 @@ export default {
       this.cover.current = file.url
       this.info.origin = collection.detail.origin
       this.info.translation = collection.detail.translation
+      this.videos = this.transformVideo(collection)
     },
     resetPic() {
       this.$refs.uploader.reset()
