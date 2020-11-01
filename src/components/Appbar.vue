@@ -1,8 +1,8 @@
 <template>
   <v-app-bar
       app
-      :height="height"
-      :color="getColor()"
+      :height="menu.height"
+      :color="color"
       :flat="getFlat()"
       dark
   >
@@ -24,7 +24,7 @@
         <v-btn
             target="_blank"
             text
-            :height="height"
+            :height="menu.height"
             :href="item.url"
             v-for="(item,key) in menu" :key="key"
         >
@@ -41,19 +41,19 @@
           <v-btn
               text
               dark
-              :height="height"
+              :height="menu.height"
           >
             <span class="subtitle-1 font-weight-bold">登陆</span>
           </v-btn>
         </div>
         <div class="pl-8" v-show="true">
           <v-avatar
-              :size="height*0.6"
+              :size="avatar.height"
               color="orange"
           >
             <span
                 class="d-inline-block text-truncate"
-                :style="{maxWidth: height*0.5 +'px'}"
+                :style="{maxWidth: avatar.height*0.8 +'px'}"
             >{{user.name}}</span>
           </v-avatar>
         </div>
@@ -67,46 +67,83 @@
     name:"Appbar",
     mounted() {
       // 滑动块移动时变化
+      this.style = this.dark ? 'dark' : 'light'
+      this.onScroll()
+      window.onscroll = this.onScroll
       if (process.env.NODE_ENV == "development") {
         this.menu = mock.menu
         this.user = mock.user
       }
-      window.onscroll = this.onScroll
     },
     props: {
-      type: String,
-      default: 'dark'
+      // 色调
+      dark: {
+        type: Boolean,
+        default: true,
+      },
+      // 背景透明度转化高度
+      transform: {
+        type: [String,Number],
+        default: 100
+      },
+      // 是否在特定高度进行透明处理
+      opacity: {
+        type: Boolean,
+        default: true
+      },
     },
     data() {
       return {
-        height: 60,
-        type: "light",
-        menu: [],
+        avatar: {
+          height: 36,
+        },
+        menu: {
+          height: 60,
+          items: [],
+        },
+        style: '',
+        color: '',
         user: {},
+        scrollbarPosition: 0,
+      }
+    },
+    watch: {
+      scrollbarPosition() {
+        this.color = this.getColor(this.style)
+        this.setOpacity()
+      },
+      style() {
+        this.color = this.getColor(this.style)
       }
     },
     methods: {
+      getColor(style) {
+        switch (style) {
+          case 'dark':
+            return "#232A34"
+          case 'light':
+            return '#fff'
+          case 'opacity':
+            return "rgba(0,0,0,0.2)"
+        }
+        return "#232A34"
+      },
       onScroll() {
-        const changeHeight = 100
-        const y = this.getScrollbarPosition()
-        if( y > 100) {
-          this.type = "dark"
-        } else {
-          this.type = "light"
-        }
+        this.scrollbarPosition = window.pageYOffset
       },
-      getScrollbarPosition() {
-        return window.pageYOffset
-      },
-      getColor() {
-        if (this.type == "dark") {
-          return "#232A34"
-        } else if (this.type == "light") {
-          return "rgba(0,0,0,0.2)"
+      setOpacity() {
+        // 如果是不变化模式，不会进行调整
+        if (this.opacity === false) {
+          return
         }
+        // 超过变化高度
+        if( this.scrollbarPosition > this.transform) {
+          return
+        }
+        this.color = this.getColor('opacity')
       },
       getFlat() {
-        return this.type == "light" ? true : false
+        return this.style === 'opacity' ? false : true
       }
     }
   }

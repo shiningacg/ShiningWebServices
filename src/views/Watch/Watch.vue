@@ -1,7 +1,8 @@
 <template>
   <div class="watch grey lighten-4 ma-0">
-    <Appbar type="dark"/>
-      <v-container class="pt-0">
+    <Appbar type="dark" :opacity="false"/>
+    <!-- TODO: 60px不写死，自动根据appbar调整 -->
+      <v-container style="margin-top: 60px" class="pt-0">
         <v-card flat>
           <!--标题-->
 
