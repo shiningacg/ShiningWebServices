@@ -73,6 +73,10 @@
       }
       window.onscroll = this.onScroll
     },
+    props: {
+      type: String,
+      default: 'dark'
+    },
     data() {
       return {
         height: 60,

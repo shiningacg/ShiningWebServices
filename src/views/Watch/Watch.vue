@@ -1,7 +1,6 @@
 <template>
   <div class="watch grey lighten-4 ma-0">
-    <Appbar/>
-    <top-head/>
+    <Appbar type="dark"/>
       <v-container class="pt-0">
         <v-card flat>
           <!--标题-->
@@ -38,7 +37,6 @@
   import Comment from "./Comments"
   import Send from "./Send"
   import Player from "./Player";
-  import TopHead from "./Head";
   import About from './About'
   import Appbar from "../../components/Appbar";
   export default {
@@ -47,7 +45,6 @@
       Comment,
       Send,
       Player,
-      TopHead,
       About,
       TimeTable,
       Appbar
