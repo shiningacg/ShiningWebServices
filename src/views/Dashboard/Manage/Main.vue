@@ -55,15 +55,12 @@ export default {
       }
       console.log(this.$route)
       const projects = this.$store.state.projects
-      if (!projects.has(cid)) {
-        try {
-          const cl = await this.$client.Collection.Search({cid: Number(cid)})
-          const project = cl.result[0]
-          this.$store.commit('addProject',project)
-        } catch (e) {
-          console.error(e)
-          return
-        }
+      try {
+        const project = await this.$client.Watch.Collection(cid)
+        this.$store.commit('addProject',project)
+      } catch (e) {
+        console.error(e)
+        return
       }
       this.current = projects.get(cid)
     }

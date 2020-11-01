@@ -32,7 +32,7 @@ export default {
     },
     findMyProject() {
       //
-      this.$client.Collection.Search({poster: 1, page: 1}).then(res => {
+      this.$client.Watch.Search({poster: 1, page: 1}).then(res => {
         console.log(res)
         for (let i of res.result) {
           this.$store.commit('addProject',i)

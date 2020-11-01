@@ -148,11 +148,12 @@ export default {
         this.reset()
         return
       }
+      const cid = this.getCurrentProject.cid
       // 开始进行上传
       try {
         const file = await this.upload(this.file)
-        const vdo = await this.$client.Collection.NewVideo({
-          cid: this.getCurrentProject.cid,
+        const vdo = await this.$client.Watch.NewVideo({
+          cid: cid,
           info: {
             title: this.chapterName,
             profile: this.title,
@@ -167,6 +168,9 @@ export default {
         console.log(e)
       }
       this.status = 'finish'
+      // 跟新数据
+      const project = await this.$client.Watch.Collection(cid)
+      this.$store.commit('addProject',project)
     },
     getDefaultCover() {
       const project = this.getCurrentProject

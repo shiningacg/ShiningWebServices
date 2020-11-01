@@ -145,7 +145,7 @@ export default {
         // 上传文件
         const cover = await this.$client.File.Upload(this.cover)
         // 发送创建请求
-        const cl = await this.$client.Collection.New({
+        const cl = await this.$client.Watch.New({
             profile: this.profile,
             translation: this.translation,
             origin: this.origin,
@@ -155,7 +155,7 @@ export default {
 
         console.log(cover)
         // 更新数据
-        await this.$client.Collection.UpdateInfo({
+        await this.$client.Watch.UpdateInfo({
           cid: cl.cid,
           appearance: {
             cover: cover.cid
