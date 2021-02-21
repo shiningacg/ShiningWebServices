@@ -49,7 +49,7 @@
     data() {
       return {
         active: 0,
-        avatar: "https://prince.kingthemes.org/wp-content/uploads/2017/01/473990304_1280x720-1-150x150.jpg",
+        avatar: "https://cdn.vuetifyjs.com/images/john.jpg",
         name: "shlande"
       }
     },
@@ -57,11 +57,11 @@
       isActive(index) {
         switch (index) {
           case 0:
-            return this.$route.name == "New"
+            return this.$route.name === "New"
           case 1:
-            return this.$route.name == "Manage"
+            return this.$route.name === "Manage"
           case 2:
-            return this.$route.name == "User"
+            return this.$route.name === "User"
         }
       },
       Change(index) {
