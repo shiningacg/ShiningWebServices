@@ -1,0 +1,72 @@
+syntax = "proto3";
+package user;
+option go_package = "github.com/shiningacg/single/api/user;user";
+import "google/protobuf/empty.proto";
+
+service User {
+  rpc EditInfo(EditInfoRequest) returns (google.protobuf.Empty) {}
+  rpc Login(LoginRequest) returns (LoginResponse) {}
+  rpc Logout(LogoutRequest) returns (google.protobuf.Empty) {}
+  rpc Register(RegisterRequest) returns (google.protobuf.Empty) {}
+
+  rpc GetInfo(GetInfoRequest) returns (GetInfoResponse) {}
+  rpc VerifyToken(VerifyTokenRequest) returns (VerifyTokenResponse) {}
+}
+
+message EditInfoRequest {
+  string studentId = 1;
+  string address = 2;
+
+  string Nickname = 3;
+  string Profile = 4;
+  string Avatar = 5;
+  uint32 Gender = 6;
+}
+
+message LoginRequest {
+  string email = 1;
+  string password = 2;
+}
+message LoginResponse {
+  string token = 1;
+}
+
+message LogoutRequest {
+  string token = 1;
+}
+
+message RegisterRequest {
+  string username = 1;
+  string password = 2;
+  string email = 3;
+}
+
+
+message GetInfoRequest {
+  string userId = 1;
+}
+message GetInfoResponse {
+  string userId = 1;
+  string username = 2;
+  PublicInfo public = 3;
+  PrivateInfo private = 4;
+}
+
+message VerifyTokenRequest {
+  string token = 1;
+}
+message VerifyTokenResponse {
+  string userId = 1;
+}
+
+message PublicInfo {
+  string nickname = 1;
+  string profile = 2;
+  string avatar = 3;
+  uint32 gender = 4;
+}
+
+message PrivateInfo {
+  string studentId = 1;
+  string address = 2;
+}

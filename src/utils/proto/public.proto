@@ -1,0 +1,53 @@
+syntax = "proto3";
+package public;
+option go_package=".;public";
+
+import "user/user.proto";
+import "file/file.v2.proto";
+import "watch/watch.proto";
+import "google/protobuf/empty.proto";
+
+service Public {
+  // 用户鉴权相关
+  rpc Login(user.LoginRequest) returns (user.LoginResponse) {}
+  rpc Logout(user.LogoutRequest) returns (google.protobuf.Empty) {}
+  rpc Register(user.RegisterRequest) returns (google.protobuf.Empty) {}
+  // 获取用户信息
+  rpc EditInfo(user.EditInfoRequest) returns (google.protobuf.Empty) {}
+  // 用户信息视图
+  rpc UserInfoPage(user.GetInfoRequest) returns (user.GetInfoResponse) {}
+
+  // 视频内容相关
+  rpc CreateCollection(watch.CreateCollectionRequest) returns (watch.CreateCollectionResponse) {}
+  rpc CreateVideo(watch.CreateVideoRequest) returns (watch.CreateVideoResponse) {}
+  rpc WatchVideo(watch.WatchVideoRequest) returns (google.protobuf.Empty) {}
+  rpc RemoveCollection(watch.RemoveCollectionRequest) returns (google.protobuf.Empty) {}
+  rpc RemoveVideo(watch.RemoveVideoRequest) returns (google.protobuf.Empty) {}
+  rpc EditCollection(watch.EditCollectionRequest) returns (google.protobuf.Empty) {}
+  rpc RenameVideo(watch.RenameVideoRequest) returns (google.protobuf.Empty) {}
+
+  // 视频视图
+  rpc SearchPage(watch.SearchCollectionRequest) returns (watch.SearchCollectionResponse) {}
+  rpc CollectionPage(CollectionPageRequest) returns (CollectionPageResponse) {}
+  rpc VideoPage(VideoPageRequest) returns (VideoPageResponse) {}
+
+  // 文件相关
+  rpc Download(file_v2.DownloadRequest) returns (file_v2.DownloadResponse) {}
+  rpc Upload(file_v2.UploadRequest) returns (file_v2.UploadResponse) {}
+  rpc File(file_v2.FileRequest) returns (file_v2.FileInfo) {}
+}
+
+// 直接和视图挂钩，可能会跨多个服务的东西
+message CollectionPageRequest {
+  string uuid = 1;
+}
+message CollectionPageResponse {
+  watch.Collection collections = 1;
+}
+
+message VideoPageRequest {
+  string uuid = 1;
+}
+message VideoPageResponse {
+  watch.Video video = 1;
+}

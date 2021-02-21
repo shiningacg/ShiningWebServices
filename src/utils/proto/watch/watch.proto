@@ -1,0 +1,139 @@
+syntax = "proto3";
+package watch;
+option go_package = "github.com/shiningacg/single/api/watch;watch";
+import "google/protobuf/empty.proto";
+
+service Watch {
+  rpc CreateCollection(CreateCollectionRequest) returns (CreateCollectionResponse) {}
+  rpc CreateVideo(CreateVideoRequest) returns (CreateVideoResponse) {}
+
+  rpc WatchVideo(WatchVideoRequest) returns (google.protobuf.Empty) {}
+  rpc ViewCollection(ViewCollectionRequest) returns (google.protobuf.Empty) {}
+
+  rpc RemoveCollection(RemoveCollectionRequest) returns (google.protobuf.Empty) {}
+  rpc RemoveVideo(RemoveVideoRequest) returns (google.protobuf.Empty) {}
+
+  rpc EditCollection(EditCollectionRequest) returns (google.protobuf.Empty) {}
+  rpc RenameVideo(RenameVideoRequest) returns (google.protobuf.Empty) {}
+
+  // 查询部分
+  rpc GetCollection(GetCollectionRequest) returns (GetCollectionResponse) {}
+  rpc GetVideo(GetVideoRequest) returns (GetVideoResponse) {}
+  rpc SearchCollection(SearchCollectionRequest) returns (SearchCollectionResponse) {}
+}
+
+message CreateCollectionRequest {
+  string origin = 1;
+  string translation = 2;
+  string cover = 3;
+  string profile = 4;
+  uint32 episodes = 5;
+  uint32 status = 6;
+}
+message CreateCollectionResponse {
+  string uuid = 1;
+}
+
+message CreateVideoRequest {
+  string uuid = 1;
+  string name = 2;
+  // 视频文件
+  string file = 3;
+}
+message CreateVideoResponse {
+  string uuid = 1;
+}
+
+message ViewCollectionRequest {
+  string uuid = 1;
+}
+
+message WatchVideoRequest {
+  string uuid = 1;
+}
+
+message RemoveCollectionRequest {
+  string uuid = 1;
+}
+
+message RemoveVideoRequest {
+  string uuid = 1;
+}
+
+message EditCollectionRequest {
+  string uuid = 1;
+  repeated string videos = 2;
+  string translation = 3;
+  string cover = 4;
+  string profile = 5;
+  uint32 status = 6;
+}
+
+message RenameVideoRequest {
+  string uuid = 1;
+  string name = 2;
+}
+
+
+message GetCollectionRequest {
+  string uuid = 1;
+}
+message GetCollectionResponse {
+  Collection collection = 1;
+}
+
+message GetVideoRequest {
+  string uuid = 1;
+}
+message GetVideoResponse {
+  Video video = 1;
+}
+
+message SearchCollectionRequest {
+  string keywords = 1;
+}
+
+message SearchCollectionResponse {
+  repeated Collection collections = 1;
+}
+
+
+
+// 公共数据
+message Collection {
+  int64 id = 1;
+  string uuid = 2;
+  string translation = 3;
+  string origin = 4;
+  string profile = 5;
+  int64 episodes = 6;
+  uint32 status = 7;
+  // 这里的cover已经是url了
+  // 所有的file类型不能传到外部
+  string cover = 8;
+  // 视频id，已经排序
+  repeated string videos = 12;
+  Data data = 9;
+  int64 crateTime = 10;
+  int64 lastUpdate = 11;
+}
+
+message Video {
+  int64  id = 1;
+  string uuid = 2;
+  string name = 4;
+  // 已经是url
+  string file = 3;
+  Data data = 5;
+}
+
+message Data {
+  // 点赞数
+  int64 like = 1;
+  // 收藏数
+  int64 star = 2;
+  // 点击次数
+  int64 view = 3;
+  // 播放次数
+  int64 watch = 4;
+}

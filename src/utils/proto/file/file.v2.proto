@@ -1,0 +1,123 @@
+syntax = "proto3";
+package file_v2;
+option go_package="github.com/shiningacg/single/api/file";
+import "google/protobuf/empty.proto";
+
+// 文件下载相关
+service File {
+  // 下载文件请求
+  rpc Download(DownloadRequest) returns (DownloadResponse) {}
+  // 上传文件请求
+  rpc Upload(UploadRequest) returns (UploadResponse) {}
+  // 查询文件信息，只能通过全局id查询
+  rpc File(FileRequest) returns (FileInfo) {}
+}
+
+// 集群相关
+service Cluster {
+  // 查询总信息用
+  rpc Status(StatusRequest) returns (StatusResponse) {}
+  // 查询单个node信息
+  rpc NodeStats(NodeRequest) returns (DetailInfo) {}
+  // 设置基本信息
+  rpc SetNodeInfo(InfoRequest) returns (google.protobuf.Empty) {}
+  // 设置权重分配方案
+  rpc Balance(BalanceRequest) returns (google.protobuf.Empty) {}
+}
+
+enum Type {
+  OS = 0;
+  IPFS = 1;
+}
+message Node {
+  string id = 1;
+  Type type = 2;
+  repeated string gateway = 3;
+  string tag = 4;
+}
+message Status {
+  message SpaceInfo {
+    uint64 Cap = 1;
+    uint64 Total = 2;
+    uint64 Free = 3;
+    uint64 Used = 4;
+  }
+  message NetworkInfo {
+    uint64 Upload = 1;
+    uint64 Download = 2;
+  }
+  message GatewayInfo {
+    uint64 Visit = 1;
+    uint64 DayVisit = 2;
+    uint64 HourVisit = 3;
+    uint64 Bandwidth = 4;
+    uint64 DayBandwidth = 5;
+    uint64 HourBandwidth = 6;
+  }
+  SpaceInfo space = 1;
+  NetworkInfo network = 2;
+  GatewayInfo Gateway = 3;
+  uint64 timestamp = 4;
+}
+message NodeInfo {
+  Node node = 1;
+  Status info = 2;
+}
+message DetailInfo {
+  Node node = 1;
+  repeated Status info = 2;
+}
+
+
+message DownloadRequest {
+  string fid = 1;
+}
+message DownloadResponse {
+  string url = 1;
+}
+
+message FileRequest {
+  string fid = 1;
+}
+message FileInfo {
+  string fid = 1;
+  string name = 2;
+  uint64 creator = 3;
+  uint64 size = 4;
+  uint64 createTime = 5;
+}
+
+message UploadRequest {
+  string name = 1;
+  uint64 size = 2;
+}
+message UploadResponse {
+  string url = 1;
+  string token = 2;
+}
+
+message StatusRequest {}
+message StatusResponse {
+  repeated NodeInfo info = 1;
+}
+
+message NodeRequest {
+  string id = 1;
+}
+
+message InfoRequest {
+  string id = 1;
+  string tag = 2;
+}
+
+message BalanceRequest {
+  string id = 1;
+  uint64 bandwidth = 2;
+  uint64 cap = 3;
+  bool entry = 5;
+  bool exit = 6;
+}
+
+message EmptyResponse {
+  string msg = 1;
+}
