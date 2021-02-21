@@ -5,6 +5,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    token: "",
     search_keywords: "",
     projectsTracker: 0,
     projects: new Map,
@@ -22,6 +23,9 @@ export default new Vuex.Store({
     },
     setSearchKeyword(stats,keywords) {
       stats.search_keywords = keywords
+    },
+    setToken(stats,token) {
+      stats.token = token
     }
   },
   actions: {

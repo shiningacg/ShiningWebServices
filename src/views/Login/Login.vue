@@ -1,14 +1,15 @@
 <template>
   <v-container fluid class="d-flex justify-end pa-0" style="height:100%;background-size: cover;background-image: url('/genshin-impack.jpeg');">
+    <!-- 登陆界面 -->
     <v-card v-show="login" height="100%" width="400" elevation="20" color="rgba(0,0,0,.5)">
         <div class="text-center title-logo col-12 pt-6">ShiningACG</div>
         <div class="form pa-6 pb-0">
           <v-text-field
               outlined
               background-color="rgba(0,0,0,.1)"
-              append-icon="mdi-account"
+              append-icon="mdi-email"
               color="primary"
-              v-model="user"
+              v-model="email"
               dark
           ></v-text-field>
           <v-text-field
@@ -16,7 +17,7 @@
               background-color="rgba(0,0,0,.1)"
               append-icon="mdi-lock"
               color="primary"
-              v-model="password"
+              v-model="password.login"
               type="password"
               dark
           ></v-text-field>
@@ -38,6 +39,7 @@
           >登录</v-btn>
         </div>
       </v-card>
+    <!--  注册界面  -->
     <v-card v-show="!login" height="100%" width="400" elevation="20" color="rgba(0,0,0,.5)">
       <div class="text-center title-logo col-12 pt-6">ShiningACG</div>
       <div class="form pa-6 pb-0">
@@ -52,9 +54,17 @@
         <v-text-field
             outlined
             background-color="rgba(0,0,0,.1)"
+            append-icon="mdi-email"
+            color="primary"
+            v-model="email"
+            dark
+        ></v-text-field>
+        <v-text-field
+            outlined
+            background-color="rgba(0,0,0,.1)"
             append-icon="mdi-lock"
             color="primary"
-            v-model="password"
+            v-model="password.register"
             type="password"
             dark
         ></v-text-field>
@@ -85,7 +95,7 @@
         >注册</v-btn>
       </div>
     </v-card>
-
+    <!-- 消息提示框 -->
     <v-dialog
         v-model="messageBox"
         width="500"
@@ -117,19 +127,24 @@
 </template>
 
 <script>
+import { RegisterRequest, LoginRequest } from "@/utils/proto/user/user_pb"
 import cookie from "js-cookie"
 export default {
   created() {
-    if (this.$client.Authed()) {
-      this.$router.push("/dashboard")
-    }
+    // if (this.$client.Authed()) {
+    //   this.$router.push("/dashboard")
+    // }
   },
   name: "Login",
   data(){
     return {
       login: true,
       user: "",
-      password: "",
+      email: "",
+      password: {
+        login: "",
+        register: "",
+      },
       activeCode: "",
       messageBox: false,
       error: ""
@@ -137,24 +152,30 @@ export default {
   },
   methods: {
     Register() {
-      this.$client.User.Register(this.user,this.password)
+      const req = new RegisterRequest()
+      req.setUsername(this.user)
+      req.setPassword(this.password.register)
+      req.setEmail(this.email)
+      this.$client.register(req,{})
       .then(()=> {
         this.error = "注册成功！"
         this.messageBox = true
       })
       .catch(err => {
-        this.error = err.message
+        console.log(err)
+        this.error = err
         this.messageBox = true
       })
     },
     Login() {
-      this.$client.Auth(this.user,this.password)
+      const req = new LoginRequest()
+      req.setEmail(this.email)
+      req.setPassword(this.password.login)
+      this.$client.login(req,{})
           .then((res)=> {
-            console.log(res)
-            cookie.set('token', res.token,{expires: 7})
+            console.log(res.getToken())
+            cookie.set('token', res.getToken(),{expires: 1})
             // TODO: 不止为何...
-            this.$client.token = res.token
-            this.$client.Reload()
             this.$router.push("/dashboard")
           })
       .catch(err => {
