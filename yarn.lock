@@ -1971,9 +1971,9 @@ caniuse-api@^3.0.0:
     lodash.uniq "^4.5.0"
 
 caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001043, caniuse-lite@^1.0.30001061:
-  version "1.0.30001062"
-  resolved "https://registry.npm.taobao.org/caniuse-lite/download/caniuse-lite-1.0.30001062.tgz?cache=0&sync_timestamp=1589869994538&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcaniuse-lite%2Fdownload%2Fcaniuse-lite-1.0.30001062.tgz#d814b648338504b315222ace6f1a533d9a55e390"
-  integrity sha1-2BS2SDOFBLMVIirObxpTPZpV45A=
+  version "1.0.30001190"
+  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001190.tgz"
+  integrity sha512-62KVw474IK8E+bACBYhRS0/L6o/1oeAVkpF2WetjV58S5vkzNh0/Rz3lD8D4YCbOTqi0/aD4X3LtoP7V5xnuAg==
 
 case-sensitive-paths-webpack-plugin@^2.3.0:
   version "2.3.0"
