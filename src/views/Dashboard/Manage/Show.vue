@@ -31,16 +31,17 @@ export default {
       this.current = item
     },
     findMyProject() {
-      //
-      this.$client.Watch.Search({poster: 1, page: 1}).then(res => {
-        console.log(res)
-        for (let i of res.result) {
-          this.$store.commit('addProject',i)
-          this.transferSearchResult(i).then(res => {
-            this.projects.push(res)
-          })
-        }
-      })
+      // TODO: 添加自己管理的东西
+      // //
+      // this.$client.Watch.Search({poster: 1, page: 1}).then(res => {
+      //   console.log(res)
+      //   for (let i of res.result) {
+      //     this.$store.commit('addProject',i)
+      //     this.transferSearchResult(i).then(res => {
+      //       this.projects.push(res)
+      //     })
+      //   }
+      // })
     },
     async transferSearchResult(result) {
       // 查询评论区

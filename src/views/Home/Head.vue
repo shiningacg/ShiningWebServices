@@ -1,6 +1,6 @@
 <template>
   <v-container fluid class="pa-0">
-    <v-parallax src="/bg.jpg" height="600">
+    <v-parallax src="/bg.jpg" height="500">
       <v-sheet color="transparent" dark class="d-flex justify-center">
         <div class="display-1 font-weight-bold" style="max-width: 700px">
           <span>想说句骚话但不知道说什么好。。</span>
@@ -34,7 +34,8 @@
     },
     methods: {
       search() {
-        console.log(this.content)
+        this.$store.commit("setSearchKeyword",this.content)
+        this.$router.push("/find?v="+this.content)
       }
     }
   }

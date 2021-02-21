@@ -3617,10 +3617,20 @@ globby@^9.2.0:
     pify "^4.0.1"
     slash "^2.0.0"
 
+google-protobuf@^3.15.1:
+  version "3.15.1"
+  resolved "https://registry.npm.taobao.org/google-protobuf/download/google-protobuf-3.15.1.tgz#b45d42ece48973a9e5e3366b4cbcf85ee6314f94"
+  integrity sha1-tF1C7OSJc6nl4zZrTLz4XuYxT5Q=
+
 graceful-fs@^4.1.11, graceful-fs@^4.1.15, graceful-fs@^4.1.2, graceful-fs@^4.1.6, graceful-fs@^4.2.2:
   version "4.2.4"
   resolved "https://registry.npm.taobao.org/graceful-fs/download/graceful-fs-4.2.4.tgz?cache=0&sync_timestamp=1588086876757&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fgraceful-fs%2Fdownload%2Fgraceful-fs-4.2.4.tgz#2256bde14d3632958c465ebc96dc467ca07a29fb"
   integrity sha1-Ila94U02MpWMRl68ltxGfKB6Kfs=
+
+grpc-web@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.npm.taobao.org/grpc-web/download/grpc-web-1.2.1.tgz#860051d705bf5baa7b81fcbd14030060bf16b7b9"
+  integrity sha1-hgBR1wW/W6p7gfy9FAMAYL8Wt7k=
 
 gzip-size@^5.0.0:
   version "5.1.1"

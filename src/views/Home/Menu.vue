@@ -6,14 +6,14 @@
           <span class="menu-text">最新上传</span>
         </v-btn>
       </div>
-      <div :class="'ml-2 mr-2 pb-3'+(isActive(1)?' wrapper':'')">
-        <v-btn text :color="isActive(1)?'primary':''" @click="changeActive(1)">
-          <span class="menu-text">新番计划</span>
-        </v-btn>
-      </div>
       <div :class="'ml-2 mr-2 pb-3'+(isActive(2)?' wrapper':'')">
         <v-btn text :color="isActive(2)?'primary':''" @click="changeActive(2)">
           <span class="menu-text">发现</span>
+        </v-btn>
+      </div>
+      <div :class="'ml-2 mr-2 pb-3'+(isActive(1)?' wrapper':'')">
+        <v-btn text :color="isActive(1)?'primary':''" @click="changeActive(1)">
+          <span class="menu-text">新番计划</span>
         </v-btn>
       </div>
     </v-container>

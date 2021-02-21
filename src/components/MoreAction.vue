@@ -26,7 +26,7 @@
     },
     created() {
       this.sources = []
-      if(is_dev_env() && this.input == undefined) {
+      if(is_dev_env() && this.input === undefined) {
         this.adapter(mock.video.source)
         return
       }

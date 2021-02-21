@@ -53,8 +53,6 @@
 </template>
 
 <script>
-import video from "@/utils/sdk/video";
-
 export default {
   props: {
     value: {

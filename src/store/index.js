@@ -5,6 +5,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    search_keywords: "",
     projectsTracker: 0,
     projects: new Map,
     videosTracker: 0,
@@ -18,6 +19,9 @@ export default new Vuex.Store({
     // TODO: store缓存
     addVideo(stats,video) {
 
+    },
+    setSearchKeyword(stats,keywords) {
+      stats.search_keywords = keywords
     }
   },
   actions: {

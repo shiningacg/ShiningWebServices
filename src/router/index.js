@@ -27,6 +27,12 @@ const routes = [
         path: "project",
         name: "Project",
         component: () => import("@/views/Home/Project")
+      },
+      {
+        path: "find",
+        name: "Find",
+        props: (route) => ({ query: route.query.q }),
+        component: () => import("@/views/Home/Find")
       }
     ]
   },

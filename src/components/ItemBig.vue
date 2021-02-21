@@ -16,19 +16,19 @@
         <!--信息布局-->
         <v-col class="pa-0 pl-4 d-flex flex-column" cols="7">
           <!--title-->
-          <div class="mb-4 mt-4 black--text text--lighten-5 subtitle-1"
+          <div class="mb-4 mt-4 black--text text--lighten-2 title"
                style="font-family: 'Source Han Sans', 'Nunito',sans-serif  !important;">
             {{title}}
           </div>
           <!--introduce-->
-          <div class="grey--text body-2 stretch"
+          <div class="grey--text body-2 stretch pr-4"
                style="font-family: 'Source Han Sans', 'Nunito',sans-serif  !important;">
             {{introduction}}
           </div>
           <!--footer-->
           <div class="mt-auto d-flex" style="font-family: 'Source Han Sans', 'Nunito',sans-serif  !important;">
             <!--TODO:添加多用户显示和工作信息-->
-            <div class="d-flex">
+            <div class="d-flex" v-if="isShowUser()">
               <!--头像及更新信息显示-->
               <v-avatar color="teal" size="44">
                 <v-img :src="posters[0].avatar"></v-img>
@@ -76,13 +76,16 @@
       }
     },
     created() {
-      if (is_dev_env()) {
+      if (is_dev_env() && this.input === undefined) {
         this.adapter(mock.video)
         return
       }
-      this.adapter(this.input)
+      this.adapterGrpc(this.input)
     },
     methods: {
+      isShowUser() {
+        return this.posters !== undefined && this.posters.length !== 0
+      },
       adapter(collection) {
         this.title = collection.name
         this.cover = collection.cover
@@ -90,6 +93,14 @@
         this.posters = collection.posters
         this.last_update = collection.last_update
         this.sources = collection.sources
+      },
+      adapterGrpc(grpc) {
+        this.title = grpc.title
+        this.cover = grpc.cover
+        this.introduction = grpc.introduction
+        this.posters = grpc.posters
+        this.last_update = grpc.last_update
+        this.sources = grpc.sources
       },
       unix_time() {
         return unix_time

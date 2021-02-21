@@ -1,5 +1,5 @@
 <template>
-  <div class="home grey lighten-4 ma-0">
+  <div class="home grey lighten-4 ma-0" style="height: 100%">
     <Appbar/>
     <top-head/>
     <Menu/>
