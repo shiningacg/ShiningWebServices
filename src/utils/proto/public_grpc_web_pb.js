@@ -28,12 +28,14 @@ proto.public = require('./public_pb.js');
 
 /**
  * @param {string} hostname
+ * @param {?Object} credentials
+ * @param {?Object} options
  * @constructor
  * @struct
  * @final
  */
 proto.public.PublicClient =
-    function (hostname, p, p1) {
+    function(hostname, credentials, options) {
   if (!options) options = {};
   options['format'] = 'text';
 
@@ -240,13 +242,13 @@ proto.public.PublicPromiseClient.prototype.logout =
  * @const
  * @type {!grpc.web.MethodDescriptor<
  *   !proto.user.RegisterRequest,
- *   !proto.google.protobuf.Empty>}
+ *   !proto.user.RegisterResponse>}
  */
 const methodDescriptor_Public_Register = new grpc.web.MethodDescriptor(
   '/public.Public/Register',
   grpc.web.MethodType.UNARY,
   user_user_pb.RegisterRequest,
-  google_protobuf_empty_pb.Empty,
+  user_user_pb.RegisterResponse,
   /**
    * @param {!proto.user.RegisterRequest} request
    * @return {!Uint8Array}
@@ -254,7 +256,7 @@ const methodDescriptor_Public_Register = new grpc.web.MethodDescriptor(
   function(request) {
     return request.serializeBinary();
   },
-  google_protobuf_empty_pb.Empty.deserializeBinary
+  user_user_pb.RegisterResponse.deserializeBinary
 );
 
 
@@ -262,10 +264,10 @@ const methodDescriptor_Public_Register = new grpc.web.MethodDescriptor(
  * @const
  * @type {!grpc.web.AbstractClientBase.MethodInfo<
  *   !proto.user.RegisterRequest,
- *   !proto.google.protobuf.Empty>}
+ *   !proto.user.RegisterResponse>}
  */
 const methodInfo_Public_Register = new grpc.web.AbstractClientBase.MethodInfo(
-  google_protobuf_empty_pb.Empty,
+  user_user_pb.RegisterResponse,
   /**
    * @param {!proto.user.RegisterRequest} request
    * @return {!Uint8Array}
@@ -273,7 +275,7 @@ const methodInfo_Public_Register = new grpc.web.AbstractClientBase.MethodInfo(
   function(request) {
     return request.serializeBinary();
   },
-  google_protobuf_empty_pb.Empty.deserializeBinary
+  user_user_pb.RegisterResponse.deserializeBinary
 );
 
 
@@ -282,9 +284,9 @@ const methodInfo_Public_Register = new grpc.web.AbstractClientBase.MethodInfo(
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @param {function(?grpc.web.Error, ?proto.google.protobuf.Empty)}
+ * @param {function(?grpc.web.Error, ?proto.user.RegisterResponse)}
  *     callback The callback function(error, response)
- * @return {!grpc.web.ClientReadableStream<!proto.google.protobuf.Empty>|undefined}
+ * @return {!grpc.web.ClientReadableStream<!proto.user.RegisterResponse>|undefined}
  *     The XHR Node Readable Stream
  */
 proto.public.PublicClient.prototype.register =
@@ -303,7 +305,7 @@ proto.public.PublicClient.prototype.register =
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @return {!Promise<!proto.google.protobuf.Empty>}
+ * @return {!Promise<!proto.user.RegisterResponse>}
  *     Promise that resolves to the response
  */
 proto.public.PublicPromiseClient.prototype.register =
@@ -1033,6 +1035,166 @@ proto.public.PublicPromiseClient.prototype.renameVideo =
       request,
       metadata || {},
       methodDescriptor_Public_RenameVideo);
+};
+
+
+/**
+ * @const
+ * @type {!grpc.web.MethodDescriptor<
+ *   !proto.google.protobuf.Empty,
+ *   !proto.watch.ListInvolvedResponse>}
+ */
+const methodDescriptor_Public_ListInvolved = new grpc.web.MethodDescriptor(
+  '/public.Public/ListInvolved',
+  grpc.web.MethodType.UNARY,
+  google_protobuf_empty_pb.Empty,
+  watch_watch_pb.ListInvolvedResponse,
+  /**
+   * @param {!proto.google.protobuf.Empty} request
+   * @return {!Uint8Array}
+   */
+  function(request) {
+    return request.serializeBinary();
+  },
+  watch_watch_pb.ListInvolvedResponse.deserializeBinary
+);
+
+
+/**
+ * @const
+ * @type {!grpc.web.AbstractClientBase.MethodInfo<
+ *   !proto.google.protobuf.Empty,
+ *   !proto.watch.ListInvolvedResponse>}
+ */
+const methodInfo_Public_ListInvolved = new grpc.web.AbstractClientBase.MethodInfo(
+  watch_watch_pb.ListInvolvedResponse,
+  /**
+   * @param {!proto.google.protobuf.Empty} request
+   * @return {!Uint8Array}
+   */
+  function(request) {
+    return request.serializeBinary();
+  },
+  watch_watch_pb.ListInvolvedResponse.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.google.protobuf.Empty} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.Error, ?proto.watch.ListInvolvedResponse)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.watch.ListInvolvedResponse>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.public.PublicClient.prototype.listInvolved =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/public.Public/ListInvolved',
+      request,
+      metadata || {},
+      methodDescriptor_Public_ListInvolved,
+      callback);
+};
+
+
+/**
+ * @param {!proto.google.protobuf.Empty} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.watch.ListInvolvedResponse>}
+ *     Promise that resolves to the response
+ */
+proto.public.PublicPromiseClient.prototype.listInvolved =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/public.Public/ListInvolved',
+      request,
+      metadata || {},
+      methodDescriptor_Public_ListInvolved);
+};
+
+
+/**
+ * @const
+ * @type {!grpc.web.MethodDescriptor<
+ *   !proto.watch.InvolveRequest,
+ *   !proto.google.protobuf.Empty>}
+ */
+const methodDescriptor_Public_Involve = new grpc.web.MethodDescriptor(
+  '/public.Public/Involve',
+  grpc.web.MethodType.UNARY,
+  watch_watch_pb.InvolveRequest,
+  google_protobuf_empty_pb.Empty,
+  /**
+   * @param {!proto.watch.InvolveRequest} request
+   * @return {!Uint8Array}
+   */
+  function(request) {
+    return request.serializeBinary();
+  },
+  google_protobuf_empty_pb.Empty.deserializeBinary
+);
+
+
+/**
+ * @const
+ * @type {!grpc.web.AbstractClientBase.MethodInfo<
+ *   !proto.watch.InvolveRequest,
+ *   !proto.google.protobuf.Empty>}
+ */
+const methodInfo_Public_Involve = new grpc.web.AbstractClientBase.MethodInfo(
+  google_protobuf_empty_pb.Empty,
+  /**
+   * @param {!proto.watch.InvolveRequest} request
+   * @return {!Uint8Array}
+   */
+  function(request) {
+    return request.serializeBinary();
+  },
+  google_protobuf_empty_pb.Empty.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.watch.InvolveRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.Error, ?proto.google.protobuf.Empty)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.google.protobuf.Empty>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.public.PublicClient.prototype.involve =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/public.Public/Involve',
+      request,
+      metadata || {},
+      methodDescriptor_Public_Involve,
+      callback);
+};
+
+
+/**
+ * @param {!proto.watch.InvolveRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.google.protobuf.Empty>}
+ *     Promise that resolves to the response
+ */
+proto.public.PublicPromiseClient.prototype.involve =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/public.Public/Involve',
+      request,
+      metadata || {},
+      methodDescriptor_Public_Involve);
 };
 
 

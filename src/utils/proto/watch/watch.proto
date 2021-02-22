@@ -4,6 +4,8 @@ option go_package = "github.com/shiningacg/single/api/watch;watch";
 import "google/protobuf/empty.proto";
 
 service Watch {
+  rpc InitUser(InitUserRequest) returns (google.protobuf.Empty) {}
+
   rpc CreateCollection(CreateCollectionRequest) returns (CreateCollectionResponse) {}
   rpc CreateVideo(CreateVideoRequest) returns (CreateVideoResponse) {}
 
@@ -16,10 +18,23 @@ service Watch {
   rpc EditCollection(EditCollectionRequest) returns (google.protobuf.Empty) {}
   rpc RenameVideo(RenameVideoRequest) returns (google.protobuf.Empty) {}
 
+  rpc Involve(InvolveRequest) returns (google.protobuf.Empty) {}
+
   // 查询部分
   rpc GetCollection(GetCollectionRequest) returns (GetCollectionResponse) {}
   rpc GetVideo(GetVideoRequest) returns (GetVideoResponse) {}
+  rpc ListInvolved(google.protobuf.Empty) returns (ListInvolvedResponse) {}
   rpc SearchCollection(SearchCollectionRequest) returns (SearchCollectionResponse) {}
+}
+
+message InitUserRequest {
+    string userId = 1;
+}
+
+message InvolveRequest {
+  bool involve = 1;
+  string userId = 2;
+  string collectionId = 3;
 }
 
 message CreateCollectionRequest {
@@ -91,6 +106,10 @@ message GetVideoResponse {
 
 message SearchCollectionRequest {
   string keywords = 1;
+}
+
+message ListInvolvedResponse {
+  repeated Collection collections = 1;
 }
 
 message SearchCollectionResponse {

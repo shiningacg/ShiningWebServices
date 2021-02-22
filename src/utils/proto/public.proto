@@ -11,7 +11,7 @@ service Public {
   // 用户鉴权相关
   rpc Login(user.LoginRequest) returns (user.LoginResponse) {}
   rpc Logout(user.LogoutRequest) returns (google.protobuf.Empty) {}
-  rpc Register(user.RegisterRequest) returns (google.protobuf.Empty) {}
+  rpc Register(user.RegisterRequest) returns (user.RegisterResponse) {}
   // 获取用户信息
   rpc EditInfo(user.EditInfoRequest) returns (google.protobuf.Empty) {}
   // 用户信息视图
@@ -25,6 +25,8 @@ service Public {
   rpc RemoveVideo(watch.RemoveVideoRequest) returns (google.protobuf.Empty) {}
   rpc EditCollection(watch.EditCollectionRequest) returns (google.protobuf.Empty) {}
   rpc RenameVideo(watch.RenameVideoRequest) returns (google.protobuf.Empty) {}
+  rpc ListInvolved(google.protobuf.Empty) returns (watch.ListInvolvedResponse) {}
+  rpc Involve(watch.InvolveRequest) returns (google.protobuf.Empty) {}
 
   // 视频视图
   rpc SearchPage(watch.SearchCollectionRequest) returns (watch.SearchCollectionResponse) {}

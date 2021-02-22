@@ -7,7 +7,7 @@ service User {
   rpc EditInfo(EditInfoRequest) returns (google.protobuf.Empty) {}
   rpc Login(LoginRequest) returns (LoginResponse) {}
   rpc Logout(LogoutRequest) returns (google.protobuf.Empty) {}
-  rpc Register(RegisterRequest) returns (google.protobuf.Empty) {}
+  rpc Register(RegisterRequest) returns (RegisterResponse) {}
 
   rpc GetInfo(GetInfoRequest) returns (GetInfoResponse) {}
   rpc VerifyToken(VerifyTokenRequest) returns (VerifyTokenResponse) {}
@@ -39,6 +39,9 @@ message RegisterRequest {
   string username = 1;
   string password = 2;
   string email = 3;
+}
+message RegisterResponse {
+  string uuid = 1;
 }
 
 
