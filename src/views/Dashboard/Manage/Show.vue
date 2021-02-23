@@ -12,6 +12,8 @@
 
 <script>
 import Project from "@/views/Dashboard/Manage/Project";
+import { FileRequest } from "@/utils/proto/file/file.v2_pb"
+import { Empty } from "google-protobuf/google/protobuf/empty_pb.js"
 export default {
   name: "Show",
   components: {
@@ -32,31 +34,33 @@ export default {
     },
     findMyProject() {
       // TODO: 添加自己管理的东西
-      // //
-      // this.$client.Watch.Search({poster: 1, page: 1}).then(res => {
-      //   console.log(res)
-      //   for (let i of res.result) {
-      //     this.$store.commit('addProject',i)
-      //     this.transferSearchResult(i).then(res => {
-      //       this.projects.push(res)
-      //     })
-      //   }
-      // })
+      this.$client.listInvolved(new Empty(),{authority:this.$store.state.token}).then(res => {
+        console.log(res)
+        this.transferSearchResult(res)
+      })
     },
     async transferSearchResult(result) {
       // 查询评论区
-      return {
-        cid : result.cid,
-        cover: await this.transferFile(result.appearance.cover),
-        title: result.detail.translation,
-        subtitle: result.detail.origin,
-        profile: result.detail.profile,
-        liked: 0,
-        comment: 0,
+      for (const c of result.getCollectionsList()) {
+        this.projects.append({
+          cid: c.getUuid(),
+          cover: await this.transferFile(c.getCover()),
+          title: c.getTranslation(),
+          subtitle: c.getOrigin(),
+          profile: c.getProfile,
+          liked: c.getData().getLike(),
+          // TODO: 添加评论数量
+          comment: 0,
+        })
       }
     },
     transferFile(cid) {
-      return this.$client.File.Download(cid).then(res => res.url).catch(err => "")
+      const req = new FileRequest()
+      req.setFid(cid)
+      return this.$client.download(req,{authority:this.$store.state.token}).then(res => res.getUrl()).catch(err => {
+        console.log(err)
+        return ""
+      })
     },
   }
 }
