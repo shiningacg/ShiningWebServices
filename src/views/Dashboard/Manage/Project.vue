@@ -42,7 +42,6 @@
         <v-btn color="primary" class="subtitle-1 font-weight-bold" @click="select">编辑</v-btn>
       </div>
     </v-card>
-    <v-divider></v-divider>
   </v-card>
 </template>
 

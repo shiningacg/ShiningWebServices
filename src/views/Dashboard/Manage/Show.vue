@@ -3,6 +3,7 @@
   <div >
     <div v-for="(item,key) in projects" :key="key">
       <Project :value="item" @manage="manageProject(item)"/>
+      <div v-show="key < projects.length-1" style="height: 12px"></div>
     </div>
     <div v-show="projects.length === 0">
       暂时没有参加任何项目呢～
@@ -32,22 +33,21 @@ export default {
       this.$router.push('/dashboard/manage/edit/'+item.cid)
       this.current = item
     },
-    findMyProject() {
+    async findMyProject() {
       // TODO: 添加自己管理的东西
-      this.$client.listInvolved(new Empty(),{authority:this.$store.state.token}).then(res => {
-        console.log(res)
-        this.transferSearchResult(res)
-      })
+      const res = await this.$client.listInvolved(new Empty(),{authority:this.$store.state.token})
+      await this.transferSearchResult(res)
     },
     async transferSearchResult(result) {
       // 查询评论区
-      for (const c of result.getCollectionsList()) {
-        this.projects.append({
+      const lst = result.getCollectionsList()
+      for (const c of lst) {
+        this.projects.push({
           cid: c.getUuid(),
           cover: await this.transferFile(c.getCover()),
           title: c.getTranslation(),
           subtitle: c.getOrigin(),
-          profile: c.getProfile,
+          profile: c.getProfile(),
           liked: c.getData().getLike(),
           // TODO: 添加评论数量
           comment: 0,
