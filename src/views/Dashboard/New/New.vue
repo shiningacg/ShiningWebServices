@@ -28,7 +28,7 @@
             </v-row>
 
             <v-row class="justify-space-between">
-              <v-col cols="6">
+              <v-col cols="6" v-if="false">
                 <v-select
                     label="标签"
                     v-model="status"
@@ -36,7 +36,14 @@
                 >
                 </v-select>
               </v-col>
-              <v-col cols="2">
+              <v-col cols="6">
+                <v-text-field
+                    v-model="episode"
+                    label="预计集数"
+                    required
+                ></v-text-field>
+              </v-col>
+              <v-col cols="6">
                 <v-select
                     label="更新状态"
                     v-model="status"
@@ -56,21 +63,21 @@
         <v-col cols="11" class="pt-0">
           <v-form>
             <v-row class="justify-space-between">
-              <v-col cols="6" class="pr-6">
+              <v-col cols="6" class="pr-6" v-if="false">
                 <v-text-field
                     v-model="author"
                     label="作者/制作团队"
                     required
                 ></v-text-field>
               </v-col>
-              <v-col cols="6" class="pl-6">
+              <v-col cols="6" class="pl-6" v-if="false">
                 <v-text-field
                     v-model="translator"
                     label="翻译组"
                     required
                 ></v-text-field>
               </v-col>
-              <v-col cols="12" class="pa-0">
+              <v-col cols="12" class="pa-0 pt-4">
                 <v-textarea
                     filled
                     name="profile"
@@ -105,6 +112,9 @@
 </template>
 
 <script>
+import { CreateCollectionRequest,CreateVideoRequest } from "@/utils/proto/watch/watch_pb"
+import { UploadRequest } from "@/utils/proto/file/file.v2_pb"
+import axios from "axios"
 import Uploader from "@/components/Uploader";
 export default {
   name: "New",
@@ -119,52 +129,76 @@ export default {
       translator: "",
       status: "",
       profile: "",
+      episode: "",
+      // cover是一个文件，不是id
       cover: undefined,
       component: {
-        status: ["连载中", "停刊", "已完结", "未开播"],
+        status: ["连载中", "已完结", "未开播"],
         emptyPlaceHolder: "说点什么呗~"
       }
     }
   },
   methods: {
     // 进行消息的转接
-    translateStatus(status) {
+    transferStatus(status) {
       switch (status) {
-        case "已完结":
-          return 0
+        case 0:
+          return "未开播"
+        case 1:
+          return "连载中"
+        case 2:
+          return "已完结"
       }
+      switch (status) {
+        case "未开播":
+          return 0
+        case "连载中":
+          return 1
+        case "已完结":
+          return 2
+      }
+      // TODO: 未知错误处理
       return 0
     },
     async createCollection() {
-      if (this.cover === undefined) {
-        console.log("空文件")
-        return
-      }
       // checkArgs
       try {
         // 上传文件
-        const cover = await this.$client.File.Upload(this.cover)
+        const cover = await this.upload(this.cover)
         // 发送创建请求
-        const cl = await this.$client.Watch.New({
-            profile: this.profile,
-            translation: this.translation,
-            origin: this.origin,
-            status: this.translateStatus(this.status)
-        })
+        const req = new CreateCollectionRequest()
+        req.setProfile(this.profile)
+        req.setTranslation(this.translation)
+        req.setOrigin(this.origin)
+        req.setEpisodes(this.episode)
+        // cover是上一个步骤拿到的id
+        req.setCover(cover)
+        req.setStatus(this.transferStatus(this.status))
+        const cl = await this.$client.createCollection(req,{authority:this.$store.state.token})
         console.log(cl)
-
-        console.log(cover)
-        // 更新数据
-        await this.$client.Watch.UpdateInfo({
-          cid: cl.cid,
-          appearance: {
-            cover: cover.cid
-          }
-        })
         this.msgBox("成功：","成功创建")
       } catch (err) {
         this.msgBox("失败",err)
       }
+    },
+    async upload(file) {
+      // TODO： 测试文件上传
+      return "test"
+      if (file === undefined) {
+        return ""
+      }
+      const req = new UploadRequest()
+      console.log(file)
+      req.setName(file.name)
+      req.setSize(file.size)
+      let res =  this.$client.upload(req,{authority:this.$store.state.token})
+      // 开始上传文件
+      let form = new FormData()
+      form.append("file",file)
+      // const resp = await axios.post(res.getUrl(),form)
+      // 获取到信息，进行上传
+      // resp.data.token
+      //return resp.data.token
     },
     // 展示messagebox
     msgBox(title,message) {
