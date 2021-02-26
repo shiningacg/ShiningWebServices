@@ -100,7 +100,7 @@
         this.introduction = grpc.introduction
         this.posters = grpc.posters
         this.last_update = grpc.last_update
-        this.sources = grpc.sources
+        this.sources = undefined
       },
       unix_time() {
         return unix_time

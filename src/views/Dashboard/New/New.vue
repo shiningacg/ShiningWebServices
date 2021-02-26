@@ -115,6 +115,7 @@
 import { CreateCollectionRequest,CreateVideoRequest } from "@/utils/proto/watch/watch_pb"
 import { UploadRequest } from "@/utils/proto/file/file.v2_pb"
 import axios from "axios"
+import is_dev_env from "@/utils/is_dev_env";
 import Uploader from "@/components/Uploader";
 export default {
   name: "New",
@@ -174,8 +175,10 @@ export default {
         // cover是上一个步骤拿到的id
         req.setCover(cover)
         req.setStatus(this.transferStatus(this.status))
+        if (is_dev_env()) {
+          console.log(req)
+        }
         const cl = await this.$client.createCollection(req,{authority:this.$store.state.token})
-        console.log(cl)
         this.msgBox("成功：","成功创建")
       } catch (err) {
         this.msgBox("失败",err)
@@ -183,7 +186,6 @@ export default {
     },
     async upload(file) {
       // TODO： 测试文件上传
-      return "test"
       if (file === undefined) {
         return ""
       }
@@ -191,18 +193,16 @@ export default {
       console.log(file)
       req.setName(file.name)
       req.setSize(file.size)
-      let res =  this.$client.upload(req,{authority:this.$store.state.token})
+      let res = await this.$client.upload(req,{authority:this.$store.state.token})
       // 开始上传文件
       let form = new FormData()
       form.append("file",file)
-      // const resp = await axios.post(res.getUrl(),form)
-      // 获取到信息，进行上传
-      // resp.data.token
-      //return resp.data.token
+      const resp = await axios.post(res.getUrl(),form)
+      return resp.data.uuid
     },
     // 展示messagebox
     msgBox(title,message) {
-      console.log(title,message)
+      window.alert(title+message)
     }
   }
 }

@@ -64,7 +64,7 @@ export default {
         for(const val of res.getCollectionsList()) {
           this.collections.push({
             title: val.getTranslation(),
-            cover: await this.getFileUrl(val.cover),
+            cover: await this.getFileUrl(val.getCover()),
             introduction: val.getProfile(),
             sources: {},
             last_update: 0,

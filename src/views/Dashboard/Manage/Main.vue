@@ -18,6 +18,7 @@
 <script>
 import Setting from "./Setting"
 import Project from "@/views/Dashboard/Manage/Project";
+import { CollectionPageRequest } from "@/utils/proto/public_pb"
 
 export default {
   name: "Manage",
@@ -56,7 +57,9 @@ export default {
       console.log(this.$route)
       const projects = this.$store.state.projects
       try {
-        const project = await this.$client.Watch.Collection(cid)
+        const req = new CollectionPageRequest()
+        req.setUuid(cid)
+        const project = await this.$client.collectionPage(req)
         this.$store.commit('addProject',project)
       } catch (e) {
         console.error(e)
