@@ -14,12 +14,6 @@
             ></v-text-field>
           </v-col>
           <v-col class="pl-6 pr-6" cols="3">
-            <v-text-field
-                label="选集"
-                v-model="chapterName"
-            ></v-text-field>
-          </v-col>
-          <v-col class="pl-6 pr-6" cols="3">
             <v-select
                 label="画质"
                 :items="config.quality"
@@ -53,6 +47,12 @@
 </template>
 
 <script>
+import {UploadRequest} from "@/utils/proto/file/file.v2_pb";
+import { CreateVideoRequest } from "@/utils/proto/watch/watch_pb";
+import { CollectionPageRequest } from "@/utils/proto/public_pb";
+import is_dev_env from "@/utils/is_dev_env";
+import axios from "axios";
+
 export default {
   props: {
     value: {
@@ -65,9 +65,7 @@ export default {
     return {
       show: false,
       title: '',
-      chapterName: '',
       file: undefined,
-      fid: '',
       status: 'waiting',
       process: 0,
       quality: '',
@@ -108,9 +106,9 @@ export default {
     showProgress() {
       return this.status !== 'waiting'
     },
-    getCurrentProject() {
+    getCurrentProjectId() {
       const cid = this.$route.params['id']
-      return this.$store.state.projects.get(cid)
+      return cid
     },
     getQuality() {
       switch (this.quality) {
@@ -146,47 +144,54 @@ export default {
         this.reset()
         return
       }
-      const cid = this.getCurrentProject.cid
+      const cid = this.getCurrentProjectId
       // 开始进行上传
+      this.status = 'uploading'
       try {
         const file = await this.upload(this.file)
-        const vdo = await this.$client.Watch.NewVideo({
-          cid: cid,
-          info: {
-            title: this.chapterName,
-            profile: this.title,
-            cover: this.getDefaultCover(),
-            file: file.cid,
-            quality: this.getQuality,
-          }
-        })
-        console.log(vdo)
+        const req = new CreateVideoRequest()
+        req.setUuid(cid)
+        req.setName(this.title)
+        req.setFile(file)
+        if (is_dev_env()) {
+          console.log(req)
+        }
+        await this.$client.createVideo(req,{authority:this.$store.state.token})
+        this.messagebox("成功")
       } catch (e) {
         this.status = 'fatal'
         console.log(e)
       }
+      // await this.reloadCollection(this.getCurrentProjectId)
       this.status = 'finish'
-      // 跟新数据
-      const project = await this.$client.Watch.Collection(cid)
+    },
+    // 跟新数据
+    async reloadCollection() {
+      const req = new CollectionPageRequest()
+      req.setUuid(this.getCurrentProjectId)
+      const project = await this.$client.collectionPage(cid)
       this.$store.commit('addProject',project)
     },
-    getDefaultCover() {
-      const project = this.getCurrentProject
-      if (project === undefined) {
-        // TODO：设置默认封面
-        return ''
-      }
-      return project.appearance.cover
+    messagebox(title, message) {
+      window.alert(title+message)
     },
-    upload() {
-      this.status = 'uploading'
-      return this.$client.File.Upload(this.file, {
+    async upload(file) {
+      const req = new UploadRequest()
+      console.log(file)
+      req.setName(file.name)
+      req.setSize(file.size)
+      let res = await this.$client.upload(req,{authority:this.$store.state.token})
+      // 开始上传文件
+      let form = new FormData()
+      const _this = this
+      form.append("file",file)
+      const resp = await axios.post(res.getUrl(),form,{
         onUploadProgress: progressEvent => {
-          this.process = progressEvent.loaded / progressEvent.total * 100 | 0
+          _this.process = (progressEvent.loaded / progressEvent.total * 100 | 0)
         }
       })
-
-    }
+      return resp.data.uuid
+    },
   }
 }
 </script>
