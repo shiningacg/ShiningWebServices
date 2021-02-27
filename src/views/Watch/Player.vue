@@ -61,18 +61,18 @@
     props: {
       input: {}
     },
-    async created() {
-      await this.loadCollection(this.currentCollectionId)
-      await this.adapterGrpc(this.project)
+    async mounted() {
       const container = this.$refs.player
-      // 测试数据
-      const _this = this
       this.dp = new DPlayer({
         container: container,
         video: {
-          url: _this.currentVideo.url
+          url: ""
         },
-      });
+      })
+      await this.loadCollection(this.currentCollectionId)
+      await this.adapterGrpc(this.project)
+      // 测试数据
+      this.switchVideo(this.currentVideo)
     },
     data() {
       return {
