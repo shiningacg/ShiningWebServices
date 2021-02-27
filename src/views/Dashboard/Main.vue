@@ -22,9 +22,16 @@
         </div>
         <div class="spacer"></div>
 
-        <div class="back-to-home">
+        <div class="back-to-home" @click="$router.push('/')">
           <v-btn text>
+            <span>首页</span>
             <v-icon>mdi-home</v-icon>
+          </v-btn>
+        </div>
+        <div >
+          <v-btn text @click="logout">
+            <span>退出</span>
+            <v-icon>mdi-exit-to-app</v-icon>
           </v-btn>
         </div>
         <div class="avatar ml-2 mr-2 d-flex">
@@ -43,6 +50,8 @@
 </template>
 
 <script>
+import { LogoutRequest } from "@/utils/proto/user/user_pb"
+import cookie from "js-cookie"
 // TODO：使用路由参数取代变量检测
   export default {
     name: "Dashboard",
@@ -79,6 +88,18 @@
             this.$router.push("user")
             return
         }
+      },
+      async logout() {
+        const req = new LogoutRequest()
+        req.setToken(this.$store.state.token)
+        try {
+          await this.$client.logout(req,{authority: this.$store.state.token})
+        } catch (e) {
+          console.error(e)
+        }
+        this.$store.commit("setToken","")
+        cookie.remove('token')
+        this.$router.push("/")
       }
     }
   }

@@ -30,7 +30,6 @@ const routes = [
       {
         path: "find",
         name: "Find",
-        props: (route) => ({ query: route.query.q }),
         component: () => import("@/views/Home/Find")
       }
     ]

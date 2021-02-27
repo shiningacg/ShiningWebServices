@@ -17,7 +17,7 @@
       <v-spacer></v-spacer>
       <!--菜单栏-->
       <div class="pl-4 pr-4">
-        <v-btn text height="60">
+        <v-btn text height="60" @click="$router.push('/')">
           <v-icon>mdi-home</v-icon>
           <span class="subtitle-1 font-weight-bold ml-2">首页</span>
         </v-btn>

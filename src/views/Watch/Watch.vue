@@ -33,9 +33,7 @@
 </template>
 
 <script>
-  import is_dev_env from "../../utils/is_dev_env";
   import TimeTable from './TimeTable'
-  import mock from "../../mock/watch.json"
   import Comment from "./Comments"
   import Send from "./Send"
   import Player from "./Player";
@@ -53,10 +51,7 @@
       Appbar
     },
     async created() {
-      // if (is_dev_env()) {
-      //   this.video = mock.video
-      //   this.components = mock.comments
-      // }
+      document.documentElement.scrollTop = 0
       await this.loadCollection(this.currentCollectionId)
       console.log(this.project,"nini",this.currentCollectionId)
     },

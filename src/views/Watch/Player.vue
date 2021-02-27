@@ -4,7 +4,7 @@
       <div class="pa-2 pb-0">
         <span class="title">{{title}}</span>
       </div>
-      <div ref="player"></div>
+      <div ref="player" style="height: 493px;width: 100%"></div>
       <div class="bottom-menu">
         <div class="top-menu">
         </div>
@@ -65,9 +65,7 @@
       const container = this.$refs.player
       this.dp = new DPlayer({
         container: container,
-        video: {
-          url: ""
-        },
+        video: ""
       })
       await this.loadCollection(this.currentCollectionId)
       await this.adapterGrpc(this.project)

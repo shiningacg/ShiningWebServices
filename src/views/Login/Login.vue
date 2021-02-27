@@ -175,6 +175,7 @@ export default {
           .then((res)=> {
             console.log(res.getToken())
             cookie.set('token', res.getToken(),{expires: 1})
+            this.$store.commit("setToken",res.getToken())
             // TODO: 不止为何...
             this.$router.push("/dashboard")
           })

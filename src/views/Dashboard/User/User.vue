@@ -251,7 +251,9 @@ export default {
       this.msgBox("错误", "暂时不支持修改密码")
     },
     setInfo() {
-      console.log(this.info)
+      if (is_dev_env()) {
+        console.log(this.info,this.$store.state.token)
+      }
       const req = new EditInfoRequest()
       req.setProfile(this.info.description)
       req.setNickname(this.info.name)
