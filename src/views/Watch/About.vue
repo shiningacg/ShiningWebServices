@@ -12,17 +12,19 @@
       </div>
       <div class="pl-4 d-flex flex-column flex-grow-1">
         <!--标题-->
-        <div class="subtitle-1 font-weight-bold d-flex">
-          <span>{{about.title}}</span>
+        <div class="d-flex pa-0">
+          <div>
+            <div class="subtitle-1 font-weight-bold" style="margin-bottom: -3px">{{about.title}}</div>
+            <div class="grey--text caption text--darken-1 font-weight-bold">
+              <span>{{about.view}} 次播放</span>
+            </div>
+          </div>
           <div class="flex-grow-1"></div>
-          <div class="left-btn pr-6 d-flex align-center">
+          <div class="left-btn pr-6 d-flex align-self-start">
             <v-btn elevation="0" color="#F06292" dark><v-icon>mdi-star-outline</v-icon><span class="font-weight-bold">订阅</span></v-btn>
           </div>
         </div>
-        <div class="grey--text caption text--darken-1 font-weight-bold">
-          <span>{{about.view}} 次播放</span>
-        </div>
-        <div class="body-2 font-weight-bold">
+        <div class="body-2 font-weight-bold pt-2">
           <span>{{about.introduction}}</span>
         </div>
         <!--底部菜单栏-->
@@ -70,18 +72,17 @@
   import is_dev_env from "../../utils/is_dev_env";
   import { CollectionPageRequest } from "@/utils/proto/public_pb"
   import mock from "../../mock/collection.json"
+  import {DownloadRequest} from "@/utils/proto/file/file.v2_pb";
   export default {
     name:"About",
     components: {},
     props: {
       input: {}
     },
-    mounted() {
-      if (is_dev_env()) {
-        this.adapter(mock.video)
-        return
-      }
-      this.adapter(this.input)
+    async created() {
+      const res = await this.loadCollection(this.$route.params.id)
+      const collection = res.getCollections()
+      await this.adapterGrpc(collection)
     },
     data() {
       return {
@@ -108,6 +109,11 @@
           posters: collection.posters,
         }
       },
+      async loadCollection(collectionId) {
+        const req = new CollectionPageRequest()
+        req.setUuid(collectionId)
+        return await this.$client.collectionPage(req)
+      },
       async adapterGrpc(collection) {
         this.about = {
           cover: await this.getFileUrl(collection.getCover()),
@@ -126,8 +132,15 @@
         req.setUuid(cid)
         return this.$client.collectionPage(req,{authority:this.$store.state.token})
       },
-      getFileUrl(fid) {
-
+      async getFileUrl(fid) {
+        const req = new DownloadRequest()
+        req.setFid(fid)
+        return this.$client.download(req,{}).then(res => {
+          return res.getUrl()
+        }).catch(err => {
+          console.log(err)
+          return ""
+        })
       }
     }
   }

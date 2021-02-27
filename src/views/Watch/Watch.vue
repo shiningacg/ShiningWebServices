@@ -17,6 +17,7 @@
             <TimeTable v-if="false"/>
           </div>
         </v-card>
+        <v-divider></v-divider>
         <!--评论相关-->
         <v-card color="white" flat class="pa-2 pt-4 pb-4">
           <div class="pt-2 pb-2 pl-5 grey--text font-weight-bold">{{comments.length}} 条评论</div>
