@@ -62,11 +62,18 @@ export default {
         this.collections = []
         console.log(res)
         for(const val of res.getCollectionsList()) {
+          let watchAddr = "/watch/"+ val.getUuid()
+          if (val.getVideosList().length === 0) {
+            watchAddr = ""
+          }
           this.collections.push({
             title: val.getTranslation(),
             cover: await this.getFileUrl(val.getCover()),
             introduction: val.getProfile(),
-            sources: {},
+            sources: {
+              download: "",
+              watch: watchAddr
+            },
             last_update: 0,
           })
         }
