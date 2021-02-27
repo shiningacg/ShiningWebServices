@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home/Home.vue'
-import Watch from '../views/Watch/Watch'
 import Login from '../views/Login/Login'
 import Comic from "../views/Comic/Comic"
 import Dashboard from "@/views/Dashboard/Main"
@@ -39,7 +38,7 @@ const routes = [
   {
     path: "/watch/:id",
     name: "Watch",
-    component: Watch
+    component: () => import("@/views/Watch/Watch")
   },
   {
     path: "/info/:id",
