@@ -49,7 +49,7 @@
     data() {
       return {
         active: 0,
-        avatar: "https://cdn.vuetifyjs.com/images/john.jpg",
+        avatar: "/avatar.png",
         name: "shlande"
       }
     },

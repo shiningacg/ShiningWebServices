@@ -180,7 +180,7 @@ export default {
   computed: {
     avatarUrl() {
       if (this.avatar === undefined || this.avatar === "") {
-        return "https://cdn.vuetifyjs.com/images/john.jpg"
+        return "/avatar.png"
       }
       return this.avatar
     }

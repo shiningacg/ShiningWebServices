@@ -51,7 +51,7 @@
                     size="36"
                 >
                   <v-img
-                      src="https://prince.kingthemes.org/wp-content/uploads/2017/01/473990304_1280x720-1-150x150.jpg"
+                      src="/avatar.png"
                   ></v-img>
                 </v-avatar>
               </template>

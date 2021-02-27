@@ -37,7 +37,7 @@ const routes = [
     ]
   },
   {
-    path: "/watch",
+    path: "/watch/:id",
     name: "Watch",
     component: Watch
   },

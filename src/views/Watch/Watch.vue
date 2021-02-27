@@ -40,6 +40,7 @@
   import Player from "./Player";
   import About from './About'
   import Appbar from "../../components/Appbar";
+  import { CollectionPageRequest } from "@/utils/proto/public_pb"
   export default {
     name: "Watch",
     components: {
@@ -50,14 +51,29 @@
       TimeTable,
       Appbar
     },
-    created() {
-      if (is_dev_env()) {
-        this.video = mock.video
-        this.components = mock.comments
+    async created() {
+      // if (is_dev_env()) {
+      //   this.video = mock.video
+      //   this.components = mock.comments
+      // }
+      await this.loadCollection(this.currentCollectionId)
+      console.log(this.project,"nini",this.currentCollectionId)
+    },
+    computed: {
+      currentCollectionId() {
+        return this.$route.params.id
+      }
+    },
+    methods: {
+      async loadCollection(collectionId) {
+        const req = new CollectionPageRequest()
+        req.setUuid(collectionId)
+        this.project = await this.$client.collectionPage(req)
       }
     },
     data() {
       return {
+        project : undefined,
         video: {},
         comments: [],
       }

@@ -2,7 +2,7 @@
   <v-container class="pa-0 pt-2 pb-2">
     <v-card flat>
       <div class="pa-2 pb-0">
-        <span>{{title}}</span>
+        <span class="title">{{title}}</span>
       </div>
       <div ref="player"></div>
       <div class="bottom-menu">
@@ -23,7 +23,7 @@
           <div ref="scroll" class="wrapper pt-2 pb-2 d-flex" style="width: 100%;overflow: scroll;">
               <v-card class="ml-1 mr-1 bottom" @click="switchVideo(item)" v-for="(item,key) in selector" :key="key">
                 <v-img
-                    src="https://picsum.photos/510/300?random"
+                    :src="item.cover"
                     height="120"
                     width="200"
                     class="v-bottom-navigation"
@@ -51,30 +51,32 @@
 <script>
   import mock from "../../mock/collection.json";
   import is_dev_env from "../../utils/is_dev_env";
+  import { VideoPageRequest } from "@/utils/proto/public_pb";
   import DPlayer from 'dplayer';
+  import { DownloadRequest } from "@/utils/proto/file/file.v2_pb";
+  import {CollectionPageRequest} from "@/utils/proto/public_pb";
   export default {
     name: "player",
     components: {},
     props: {
       input: {}
     },
-    mounted() {
-      if (is_dev_env() && this.input == undefined) {
-        this.adapter(mock.video)
-      } else {
-        this.adapter(this.input)
-      }
+    async created() {
+      await this.loadCollection(this.currentCollectionId)
+      await this.adapterGrpc(this.project)
       const container = this.$refs.player
       // 测试数据
+      const _this = this
       this.dp = new DPlayer({
         container: container,
         video: {
-          url: "http://speed.shiningacg.fun/thankyou.mp4",
+          url: _this.currentVideo.url
         },
       });
     },
     data() {
       return {
+        project: undefined,
         dp : {},
         currentVideo: {
           vid: 0,
@@ -98,7 +100,20 @@
         this.title = this.getTitle()
       }
     },
+    computed: {
+      currentCollectionId() {
+        if (this.$route.params.id === "") {
+          return undefined
+        }
+        return this.$route.params.id
+      }
+    },
     methods: {
+      async loadCollection(collectionId) {
+        const req = new CollectionPageRequest()
+        req.setUuid(collectionId)
+        this.project = await this.$client.collectionPage(req)
+      },
       adapter(collection) {
         this.name = collection.name
         this.selector = []
@@ -109,8 +124,42 @@
         this.currentVideo = this.selector[0]
         this.title = this.getTitle()
       },
+      async adapterGrpc(collectionPageResponse) {
+        console.log(collectionPageResponse)
+        const cl = collectionPageResponse.getCollections()
+        this.name = cl.getTranslation()
+        this.selector = []
+        for (const chapter of cl.getVideosList()) {
+          // 查找视频
+          const res = await this.getVideo(chapter)
+          const vdo = res.getVideo()
+          console.log(vdo)
+          this.selector.push({vid:vdo.getUuid(),name:vdo.getName(),url:await this.getFileUrl(vdo.getFile()),cover:""})
+        }
+        if (this.selector.length == 0) {
+          console.error("没有任何的视频")
+          return
+        }
+        this.currentVideo = this.selector[0]
+        this.title = this.getTitle()
+      },
       getTitle() {
         return this.name +" "+ this.currentVideo.name
+      },
+      getVideo(vid) {
+        const req = new VideoPageRequest()
+        req.setUuid(vid)
+        return this.$client.videoPage(req,{authority:this.$store.state.token})
+      },
+      async getFileUrl(fid) {
+        const req = new DownloadRequest()
+        req.setFid(fid)
+        return this.$client.download(req,{}).then(res => {
+          return res.getUrl()
+        }).catch(err => {
+          console.error(err)
+          return ""
+        })
       },
       scroll(px) {
         const el = this.$refs.scroll
