@@ -6,15 +6,15 @@
       <!--TODO：按钮的切换：当修改被点击的时候，添加按钮消失，增加重置按钮，保存按钮和取消按钮-->
       <!--TODO：当修改选中的时候，card高度拔高，同时hover时提示修改和删除-->
       <div>
-        <v-btn class="ml-2 mr-2" elevation="0" color="green" @click="edit" dark>
+        <v-btn class="ml-2 mr-2" elevation="0" color="green" @click="edit" v-show="!status.edit" dark>
           <v-icon class="pr-1" size="16">mdi-pencil</v-icon>
           <span>修改</span>
         </v-btn>
-        <v-btn class="ml-2 mr-2" elevation="0" color="green" @click="save" dark>
+        <v-btn class="ml-2 mr-2" elevation="0" color="green" @click="save" v-show="status.edit" dark>
           <v-icon class="pr-1" size="16">mdi-content-save</v-icon>
           <span>保存</span>
         </v-btn>
-        <v-btn class="ma-2 mr-2" elevation="0" color="green" @click="addVideo" dark>
+        <v-btn class="ma-2 mr-2" elevation="0" color="green" @click="addVideo" v-show="!status.edit" dark>
           <v-icon class="pr-1">mdi-plus</v-icon>
           <span>添加</span>
         </v-btn>
@@ -36,7 +36,7 @@
         </v-card>
       </v-col>
     </draggable>
-    <add-video v-model="add.show"></add-video>
+    <add-video v-model="add.show" @added="videoAdded"></add-video>
   </v-col>
 </template>
 
@@ -54,6 +54,7 @@ export default {
     AddVideo
   },
   props: {
+    // value是只读的
     value: {
       type: Array,
       default: undefined
@@ -81,6 +82,16 @@ export default {
     }
   },
   methods: {
+    videoAdded(title,vid) {
+      console.log("added",title,vid)
+      this.items.push({title:title,vid:vid})
+      // 这个修改已经产生了
+      this.value.push({title:title,vid:vid})
+      this.$emit('input',this.value)
+
+      this.save()
+      this.reset()
+    },
     deleteVideo(i) {
       this.items.splice(i,1)
     },
@@ -99,10 +110,10 @@ export default {
     },
     reset() {
       this.items = this.value.slice(0)
+      this.save()
     },
     save() {
-      console.log(this.items)
-      this.$emit('input',this.items)
+      this.$emit('saved',this.items)
       this.status.edit = false
     },
   }

@@ -156,8 +156,9 @@ export default {
         if (is_dev_env()) {
           console.log(req)
         }
-        await this.$client.createVideo(req,{authority:this.$store.state.token})
-        this.messagebox("成功")
+        const res = await this.$client.createVideo(req,{authority:this.$store.state.token})
+        this.$emit("added",this.title,res.getUuid())
+        // this.messagebox("成功")
       } catch (e) {
         this.status = 'fatal'
         console.log(e)

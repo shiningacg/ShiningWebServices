@@ -66,7 +66,7 @@
         </v-row>
       </v-col>
       <!--内容修改-->
-      <Chapters v-model="videos"></Chapters>
+      <Chapters v-model="videos" @saved="videoInfoSaved"></Chapters>
     </v-row>
     <v-card-actions>
       <v-spacer></v-spacer>
@@ -81,9 +81,9 @@
 import Uploader from "@/components/Uploader";
 import Chapters from "@/views/Dashboard/Manage/Content";
 import is_dev_env from "@/utils/is_dev_env";
-import {CollectionPageRequest} from "@/utils/proto/public_pb";
+import {CollectionPageRequest,VideoPageRequest} from "@/utils/proto/public_pb";
 import {DownloadRequest, UploadRequest} from "@/utils/proto/file/file.v2_pb"
-import {VideoPageRequest, EditCollectionRequest} from "@/utils/proto/watch/watch_pb"
+import {EditCollectionRequest} from "@/utils/proto/watch/watch_pb"
 import axios from "axios";
 
 export default {
@@ -95,6 +95,7 @@ export default {
   created() {
     // 清空一些数据
     this.videos = []
+    this.editValue = []
     this.loadCollection()
   },
   data() {
@@ -112,21 +113,24 @@ export default {
         }
       },
       videos: [{
-        vid: '',
-        info: {
-          title: '',
-          translation: "",
-          profile: '',
-        }
+        vid: "",
+        title: "",
+        profile: "",
+      }],
+      // editTable 视频修改部分的东西
+      editValue: [{
+        vid: "",
+        title: "",
+        profile: "",
       }],
       translation: "",
       profile : "",
     }
   },
   watch: {
-    '$store.state.projectsTracker'() {
-      this.loadCollection()
-    }
+    // '$store.state.projectsTracker'() {
+    //   this.loadCollection()
+    // }
   },
   computed: {
     collectionId() {
@@ -134,17 +138,25 @@ export default {
     }
   },
   methods: {
+    videoInfoSaved(editValue) {
+      this.editValue = editValue.slice(0)
+    },
     async transformVideo(videoIds) {
-      const videos = []
+      let videos = []
+      let promises = []
       for (const vid of videoIds) {
-        this.getVideo(vid).then(res => {
+        const pr = this.getVideo(vid).then(res => {
+          res = res.getVideo()
           videos.push({
             vid: res.getUuid(),
             title: res.getName(),
             profile: "",
           })
         })
+        promises.push(pr)
       }
+      // 一定要等待完成再传数据出去
+      await Promise.all(promises)
       return videos
     },
     async loadCollection() {
@@ -157,10 +169,9 @@ export default {
       // this.adapter(cl)
       const req = new CollectionPageRequest()
       req.setUuid(cid)
-      this.$client.collectionPage(req, {authority: this.$store.state.token})
-          .then(res => {
-            this.adapterGrpc(res.getCollections())
-          })
+      const res = await this.$client.collectionPage(req, {authority: this.$store.state.token})
+      await this.adapterGrpc(res.getCollections())
+
     },
     async adapterGrpc(grpc) {
       const req = new DownloadRequest()
@@ -174,6 +185,15 @@ export default {
       this.info.profile = grpc.getProfile()
       // 通过id查询vdo
       this.videos = await this.transformVideo(grpc.getVideosList())
+      // 加载editvalue
+      this.adapterEditValue(this.videos)
+    },
+    adapterEditValue(videos) {
+      videos.forEach(val => this.editValue.push({
+        vid: val.vid,
+        title: val.title,
+        profile: val.profile
+      }))
     },
     getVideo(vdo) {
       const req = new VideoPageRequest()
@@ -216,6 +236,12 @@ export default {
         const res = await this.upload(this.pic)
         req.setCover(res)
       }
+      // 加入视频信息
+      const videos = []
+      for (const v of this.editValue) {
+        videos.push(v.vid)
+      }
+      req.setVideosList(videos)
 
       if (is_dev_env()) {
         console.log(req)
