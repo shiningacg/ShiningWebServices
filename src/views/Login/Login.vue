@@ -131,9 +131,9 @@ import { RegisterRequest, LoginRequest } from "@/utils/proto/user/user_pb"
 import cookie from "js-cookie"
 export default {
   created() {
-    // if (this.$client.Authed()) {
-    //   this.$router.push("/dashboard")
-    // }
+    if (this.isLogin()) {
+      this.$router.push("/dashboard")
+    }
   },
   name: "Login",
   data(){
@@ -151,6 +151,15 @@ export default {
     }
   },
   methods: {
+    isLogin() {
+      let token
+      if (this.$store.state.token === "") {
+        token = cookie.get('token')
+      } else {
+        token = this.$store.state.token
+      }
+      return token !== "" && token !== undefined
+    },
     Register() {
       const req = new RegisterRequest()
       req.setUsername(this.user)

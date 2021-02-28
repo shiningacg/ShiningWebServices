@@ -62,7 +62,21 @@ import cookie from "js-cookie"
         name: "shlande"
       }
     },
+    mounted() {
+      if (!this.isLogin()) {
+        this.$router.push("/login")
+      }
+    },
     methods: {
+      isLogin() {
+        let token
+        if (this.$store.state.token === "") {
+          token = cookie.get('token')
+        } else {
+          token = this.$store.state.token
+        }
+        return token !== "" && token !== undefined
+      },
       isActive(index) {
         switch (index) {
           case 0:

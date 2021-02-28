@@ -42,7 +42,7 @@
   </v-app-bar>
 </template>
 <script>
-  import mock from "../mock/appbar.json"
+  import cookie from "js-cookie"
   import { Empty } from "google-protobuf/google/protobuf/empty_pb"
   import {DownloadRequest} from "@/utils/proto/file/file.v2_pb";
   export default {
@@ -73,7 +73,7 @@
     },
     computed: {
       isLogin() {
-        return this.$store.state.token !== ""
+        return this.$store.state.token !== "" && this.$store.state.token !== undefined
       }
     },
     data() {
@@ -138,9 +138,15 @@
       loginClick() {
         this.$router.push("/login")
       },
+      getToken() {
+        if (this.$store.state.token === "") {
+          return cookie.get('token')
+        }
+        return this.$store.state.token
+      },
       async loadAccountInfo() {
         try {
-          const user = await this.$client.userInfoPage(new Empty(),{authority:this.$store.state.token})
+          const user = await this.$client.userInfoPage(new Empty(),{authority:this.getToken()})
           let avatar = "/avatar.png"
           if (user.getPublic().getAvatar() !== "") {
             avatar = await this.getFileUrl(user.getAvatar())
