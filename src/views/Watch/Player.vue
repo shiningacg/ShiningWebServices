@@ -126,14 +126,26 @@
         console.log(collectionPageResponse)
         const cl = collectionPageResponse.getCollections()
         this.name = cl.getTranslation()
-        this.selector = []
+        const selector = []
+        const sorted = []
+        const promises = []
         for (const chapter of cl.getVideosList()) {
           // 查找视频
-          const res = await this.getVideo(chapter)
-          const vdo = res.getVideo()
-          console.log(vdo)
-          this.selector.push({vid:vdo.getUuid(),name:vdo.getName(),url:await this.getFileUrl(vdo.getFile()),cover:""})
+          promises.push(this.getVideo(chapter).then(async res => {
+            const vdo = res.getVideo()
+            console.log(vdo)
+            selector.push({vid:vdo.getUuid(),name:vdo.getName(),url: await this.getFileUrl(vdo.getFile()),cover:""})
+          }))}
+        // 排序
+        await Promise.all(promises)
+        for (const chapter of cl.getVideosList()) {
+          for (const v of selector) {
+            if (v.vid == chapter) {
+              sorted.push(v)
+            }
+          }
         }
+        this.selector = sorted
         if (this.selector.length == 0) {
           console.error("没有任何的视频")
           return

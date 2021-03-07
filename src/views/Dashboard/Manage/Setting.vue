@@ -143,6 +143,7 @@ export default {
     },
     async transformVideo(videoIds) {
       let videos = []
+      let sorted = []
       let promises = []
       for (const vid of videoIds) {
         const pr = this.getVideo(vid).then(res => {
@@ -157,7 +158,15 @@ export default {
       }
       // 一定要等待完成再传数据出去
       await Promise.all(promises)
-      return videos
+      // 调整顺序
+      for (const vid of videoIds) {
+        for (const v of videos) {
+          if (v.vid == vid) {
+            sorted.push(v)
+          }
+        }
+      }
+      return sorted
     },
     async loadCollection() {
       const cid = this.$route.params['id']
